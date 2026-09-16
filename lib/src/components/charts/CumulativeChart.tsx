@@ -129,11 +129,14 @@ export function CumulativeChart({
           data={rows}
           margin={{ top: 16, right: 12, bottom: 0, left: minimal ? 0 : -8 }}
           onMouseMove={(s) => {
-            const idx =
-              typeof s.activeTooltipIndex === 'number'
-                ? s.activeTooltipIndex
-                : null
-            onActiveIndex?.(idx)
+            // Recharts 3 reports the index as a string; coerce and validate.
+            const raw = s.activeTooltipIndex
+            const idx = raw === undefined || raw === null ? NaN : Number(raw)
+            onActiveIndex?.(
+              Number.isInteger(idx) && idx >= 0 && idx < rows.length
+                ? idx
+                : null,
+            )
           }}
           onMouseLeave={() => onActiveIndex?.(null)}
         >

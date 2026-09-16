@@ -16,7 +16,7 @@ import {
   metric,
 } from '#/data/stats'
 import type { PlatformId } from '#/data/stats'
-import { compact, formatMetric, share } from '#/lib/format'
+import { cn, compact, formatMetric, share } from '#/lib/format'
 
 interface CardSpec {
   platform: PlatformId
@@ -98,40 +98,53 @@ export function Platforms() {
           <div className="flex h-12 w-full gap-1 overflow-hidden rounded-md">
             {(['x', 'linkedin', 'youtube'] as PlatformId[]).map((p, i) => {
               const pct = share(PLATFORM_TOTALS[p], TOTAL_IMPRESSIONS)
+              const small = pct < 12
               return (
                 <motion.div
                   key={p}
                   initial={{ flexGrow: 0, opacity: 0 }}
-                  whileInView={{ flexGrow: Math.max(pct, 2.5), opacity: 1 }}
+                  whileInView={{ flexGrow: Math.max(pct, 4), opacity: 1 }}
                   viewport={{ once: true, amount: 0.6 }}
                   transition={{
                     duration: 1.2,
                     ease: [0.16, 1, 0.3, 1],
                     delay: 0.1 + i * 0.1,
                   }}
-                  className="group relative flex min-w-0 items-center gap-2 px-3 text-white"
-                  style={{
-                    background:
-                      p === 'x'
-                        ? '#17171c'
-                        : p === 'youtube'
-                          ? '#e11d1d'
-                          : '#0a66c2',
-                    flexBasis: 0,
-                  }}
-                  title={`${PLATFORMS[p].name} · ${pct}%`}
+                  className={cn(
+                    'group relative flex min-w-0 items-center gap-2 text-white',
+                    small ? 'justify-center px-2' : 'px-3',
+                  )}
+                  style={{ background: PLATFORMS[p].onLight, flexBasis: 0 }}
+                  title={`${PLATFORMS[p].name} · ${pct}% · ${compact(PLATFORM_TOTALS[p])}`}
                 >
                   <PlatformLogo platform={p} size={13} className="shrink-0" />
-                  <span className="tabular truncate text-[13px]">
-                    {pct}%{' '}
-                    <span className="hidden opacity-60 md:inline">
-                      · {compact(PLATFORM_TOTALS[p])}
+                  {!small && (
+                    <span className="tabular truncate text-[13px]">
+                      {pct}%{' '}
+                      <span className="hidden opacity-60 md:inline">
+                        · {compact(PLATFORM_TOTALS[p])}
+                      </span>
                     </span>
-                  </span>
+                  )}
                 </motion.div>
               )
             })}
           </div>
+          <ul className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-slate">
+            {(['x', 'linkedin', 'youtube'] as PlatformId[]).map((p) => (
+              <li key={p} className="flex items-center gap-2">
+                <span
+                  className="inline-block h-2 w-2 rounded-full"
+                  style={{ background: PLATFORMS[p].onLight }}
+                />
+                <span className="text-ink">{PLATFORMS[p].name}</span>
+                <span className="tabular">
+                  {share(PLATFORM_TOTALS[p], TOTAL_IMPRESSIONS)}% ·{' '}
+                  {compact(PLATFORM_TOTALS[p])}
+                </span>
+              </li>
+            ))}
+          </ul>
         </Reveal>
 
         <RevealGroup className="mt-6 grid gap-4 lg:grid-cols-3" stagger={0.1}>

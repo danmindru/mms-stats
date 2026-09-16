@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'motion/react'
+import { motion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { ArrowUpRight, Menu, X as CloseIcon } from 'lucide-react'
 import { AvatarPair } from '#/components/brand/Avatar'
@@ -32,7 +32,7 @@ export function AnnouncementBar() {
 }
 
 export function Nav() {
-  const { scrollY } = useScroll()
+  const { scrollY, scrollYProgress } = useScroll()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const shadow = useTransform(
@@ -40,6 +40,11 @@ export function Nav() {
     [0, 80],
     ['0 0 0 0 rgba(0,0,0,0)', '0 1px 0 0 rgba(23,23,28,0.08)'],
   )
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 24,
+    mass: 0.3,
+  })
 
   useEffect(() => scrollY.on('change', (v) => setScrolled(v > 24)), [scrollY])
 
@@ -51,6 +56,11 @@ export function Nav() {
         scrolled ? 'bg-white/80 py-2' : 'bg-white/0 py-4',
       )}
     >
+      <motion.span
+        aria-hidden
+        style={{ scaleX: progress }}
+        className="absolute inset-x-0 bottom-0 h-px origin-left bg-primary"
+      />
       <nav className="mx-auto grid max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-5 sm:px-8">
         <a href="#top" className="flex items-center gap-3">
           <AvatarPair size={28} />

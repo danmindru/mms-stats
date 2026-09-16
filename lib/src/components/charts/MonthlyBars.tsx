@@ -42,7 +42,7 @@ export function MonthlyBars({
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
-          margin={{ top: 4, right: 0, bottom: 0, left: 0 }}
+          margin={{ top: 4, right: 10, bottom: 0, left: 10 }}
           barCategoryGap="28%"
         >
           <XAxis
@@ -51,6 +51,7 @@ export function MonthlyBars({
             axisLine={false}
             interval={showAxis ? 2 : 100}
             hide={!showAxis}
+            tickFormatter={(v: string) => v.slice(0, 3)}
             dy={6}
             tick={{ fill: dark ? 'rgba(255,255,255,0.5)' : '#93939f' }}
           />

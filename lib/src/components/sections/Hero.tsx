@@ -144,7 +144,7 @@ export function Hero() {
                     <span className="font-display text-[clamp(20px,2.4vw,30px)] leading-none tracking-tight">
                       <Counter
                         value={PLATFORM_TOTALS[p]}
-                        delay={1300 + i * 120}
+                        delay={500 + i * 120}
                       />
                     </span>
                   </div>
