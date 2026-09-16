@@ -63,13 +63,13 @@ const KPIS = [
 export function Totals() {
   const [mode, setMode] = useState<SeriesMode>('platform')
   const [cumulate, setCumulate] = useState(true)
-  const [enabled, setEnabled] = useState<Record<string, boolean>>({
-    x: true,
-    youtube: true,
-    linkedin: true,
-    dan: true,
-    sandra: true,
-  })
+  const [enabled, setEnabled] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(
+      Object.values(SERIES_ORDER)
+        .flat()
+        .map((k) => [k, true]),
+    ),
+  )
   const [active, setActive] = useState<number | null>(null)
 
   const rows = useMemo(() => buildRows(mode, cumulate), [mode, cumulate])
@@ -177,6 +177,7 @@ export function Totals() {
                 options={[
                   { value: 'platform', label: 'By platform' },
                   { value: 'person', label: 'By person' },
+                  { value: 'account', label: 'By account' },
                 ]}
               />
               <Toggle.Root

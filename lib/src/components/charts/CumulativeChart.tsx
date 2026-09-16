@@ -10,6 +10,7 @@ import {
 } from 'recharts'
 import type { TooltipContentProps } from 'recharts'
 import {
+  ACCOUNTS,
   MONTH_LABELS,
   PEOPLE,
   PERSON_MONTHLY,
@@ -17,13 +18,13 @@ import {
   PLATFORM_MONTHLY,
   cumulative,
 } from '#/data/stats'
-import type { PersonId, PlatformId } from '#/data/stats'
+import type { AccountId, PersonId, PlatformId } from '#/data/stats'
 import { compact, cn } from '#/lib/format'
 import { PlatformLogo } from '#/components/brand/PlatformLogo'
 import { Avatar } from '#/components/brand/Avatar'
 
-export type SeriesMode = 'platform' | 'person'
-export type SeriesKey = PlatformId | PersonId
+export type SeriesMode = 'platform' | 'person' | 'account'
+export type SeriesKey = PlatformId | PersonId | AccountId
 
 export const SERIES_COLORS: Record<SeriesKey, { light: string; dark: string }> =
   {
@@ -32,15 +33,26 @@ export const SERIES_COLORS: Record<SeriesKey, { light: string; dark: string }> =
     linkedin: { light: '#0a66c2', dark: '#63a8ff' },
     dan: { light: '#1863dc', dark: '#79b0ff' },
     sandra: { light: '#ff7759', dark: '#ffad9b' },
+    'sandra-x': { light: '#ff7759', dark: '#ffad9b' },
+    'dan-x': { light: '#17171c', dark: '#f4f4f6' },
+    'sandra-linkedin': { light: '#0a66c2', dark: '#63a8ff' },
+    'mms-youtube': { light: '#e11d1d', dark: '#ff6b6b' },
   }
 
 export const SERIES_ORDER: Record<SeriesMode, SeriesKey[]> = {
   platform: ['x', 'linkedin', 'youtube'],
   person: ['sandra', 'dan'],
+  account: ['sandra-x', 'dan-x', 'sandra-linkedin', 'mms-youtube'],
 }
 
-export const seriesLabel = (k: SeriesKey) =>
-  k in PLATFORMS ? PLATFORMS[k as PlatformId].name : PEOPLE[k as PersonId].name
+const isPlatform = (k: SeriesKey): k is PlatformId => k in PLATFORMS
+const isPerson = (k: SeriesKey): k is PersonId => k in PEOPLE
+
+export const seriesLabel = (k: SeriesKey) => {
+  if (isPlatform(k)) return PLATFORMS[k].name
+  if (isPerson(k)) return PEOPLE[k].name
+  return ACCOUNTS[k].handle
+}
 
 export function SeriesGlyph({
   k,
@@ -51,22 +63,28 @@ export function SeriesGlyph({
   size?: number
   className?: string
 }) {
-  if (k in PLATFORMS) {
+  if (isPlatform(k)) {
+    return <PlatformLogo platform={k} size={size} className={className} />
+  }
+  if (isPerson(k)) {
     return (
-      <PlatformLogo
-        platform={k as PlatformId}
-        size={size}
-        className={className}
-      />
+      <Avatar person={k} size={size + 4} ring={false} className={className} />
     )
   }
+  const acc = ACCOUNTS[k]
   return (
-    <Avatar
-      person={k as PersonId}
-      size={size + 4}
-      ring={false}
-      className={className}
-    />
+    <span className={cn('inline-flex items-center', className)}>
+      {acc.people.map((p, i) => (
+        <Avatar
+          key={p}
+          person={p}
+          size={size + 4}
+          ring={false}
+          className={i > 0 ? '-ml-1.5' : ''}
+        />
+      ))}
+      <PlatformLogo platform={acc.platform} size={size - 4} className="ml-1" />
+    </span>
   )
 }
 
@@ -76,20 +94,20 @@ export interface Row {
   [key: string]: number | string
 }
 
+const monthlyFor = (k: SeriesKey): number[] => {
+  if (isPlatform(k)) return PLATFORM_MONTHLY[k]
+  if (isPerson(k)) return PERSON_MONTHLY[k]
+  return ACCOUNTS[k].monthly
+}
+
 export const buildRows = (mode: SeriesMode, cumulate: boolean): Row[] => {
-  const src = mode === 'platform' ? PLATFORM_MONTHLY : PERSON_MONTHLY
   const keys = SERIES_ORDER[mode]
-  const series = Object.fromEntries(
-    keys.map((k) => [
-      k,
-      cumulate
-        ? cumulative(src[k as keyof typeof src])
-        : src[k as keyof typeof src],
-    ]),
-  ) as Record<SeriesKey, number[]>
+  const series = new Map(
+    keys.map((k) => [k, cumulate ? cumulative(monthlyFor(k)) : monthlyFor(k)]),
+  )
   return MONTH_LABELS.map((month, i) => {
     const row: Row = { month, i }
-    for (const k of keys) row[k] = series[k][i]
+    for (const k of keys) row[k] = series.get(k)?.[i] ?? 0
     return row
   })
 }
