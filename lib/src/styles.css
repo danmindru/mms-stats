@@ -1,17 +1,246 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource-variable/inter/opsz.css';
+@import '@fontsource-variable/jetbrains-mono';
 
-@import "tailwindcss";
+@theme {
+  /* Cohere-derived palette */
+  --color-primary: #17171c;
+  --color-black: #000000;
+  --color-ink: #212121;
+  --color-deep-green: #003c33;
+  --color-deep-green-2: #00281f;
+  --color-dark-navy: #071829;
+  --color-canvas: #ffffff;
+  --color-stone: #eeece7;
+  --color-stone-2: #e6e3dc;
+  --color-pale-green: #edfce9;
+  --color-pale-blue: #f1f5ff;
+  --color-hairline: #d9d9dd;
+  --color-border-light: #e5e7eb;
+  --color-card-border: #f2f2f2;
+  --color-muted: #93939f;
+  --color-slate: #75758a;
+  --color-body-muted: #616161;
+  --color-action: #1863dc;
+  --color-focus: #4c6ee6;
+  --color-coral: #ff7759;
+  --color-coral-soft: #ffad9b;
+  --color-violet: #9b60aa;
+  --color-error: #b30000;
+  --color-mint: #7ee2b8;
 
-* {
-  box-sizing: border-box;
+  /* Brand */
+  --color-brand-x: #17171c;
+  --color-brand-youtube: #ff0000;
+  --color-brand-linkedin: #0a66c2;
+
+  --font-display:
+    'Space Grotesk Variable', 'CohereText', 'Inter Variable', ui-sans-serif,
+    system-ui, sans-serif;
+  --font-sans:
+    'Inter Variable', 'Unica77 Cohere Web', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    'JetBrains Mono Variable', 'CohereMono', ui-monospace, SFMono-Regular,
+    Menlo, monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-pill: 32px;
+
+  --tracking-display: -0.02em;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-shimmer: shimmer 2.8s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-spin-slow: spin 28s linear infinite;
+  --animate-orbit: orbit 18s linear infinite;
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent);
+    }
+    60% {
+      box-shadow: 0 0 0 8px transparent;
+    }
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
-html,
-body,
-#app {
-  min-height: 100%;
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings:
+      'ss01' on,
+      'cv11' on;
+  }
+
+  ::selection {
+    background: var(--color-coral);
+    color: var(--color-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
-body {
-  margin: 0;
+@utility text-balance {
+  text-wrap: balance;
 }
 
+@utility text-pretty {
+  text-wrap: pretty;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Uppercase mono label used for system markers. */
+@utility mono-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Fine film grain over dark bands. */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    border-radius: inherit;
+    z-index: 1;
+  }
+}
+
+/* Faint blueprint grid for the hero canvas. */
+@utility blueprint {
+  background-image:
+    linear-gradient(to right, rgba(23, 23, 28, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(23, 23, 28, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 0%,
+    black 30%,
+    transparent 100%
+  );
+}
+
+@utility blueprint-dark {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Scanline shimmer used on the live pill. */
+@utility shimmer-text {
+  background: linear-gradient(
+    100deg,
+    currentColor 40%,
+    color-mix(in srgb, currentColor 30%, white) 50%,
+    currentColor 60%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+@utility mask-fade-x {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+
+/* Recharts resets so tooltips/cursors inherit the design system. */
+.recharts-wrapper,
+.recharts-surface {
+  outline: none;
+}
+.recharts-cartesian-axis-tick text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
