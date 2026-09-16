@@ -1,0 +1,10 @@
+{
+  "name": "lib (TanStack Start)",
+  "install": "cd lib && npm install",
+  "terminals": [
+    {
+      "name": "dev-server",
+      "command": "cd lib && npm run dev"
+    }
+  ]
+}
