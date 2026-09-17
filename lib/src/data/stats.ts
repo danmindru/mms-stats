@@ -52,7 +52,6 @@ export interface Person {
   name: string
   avatar: string
   role: string
-  accent: string
 }
 
 export const PEOPLE: Record<PersonId, Person> = {
@@ -61,14 +60,12 @@ export const PEOPLE: Record<PersonId, Person> = {
     name: 'Dan',
     avatar: '/avatars/dan.png',
     role: 'Co-host',
-    accent: '#2b2187',
   },
   sandra: {
     id: 'sandra',
     name: 'Sandra',
     avatar: '/avatars/sandra.png',
     role: 'Co-host',
-    accent: '#5b4fd1',
   },
 }
 

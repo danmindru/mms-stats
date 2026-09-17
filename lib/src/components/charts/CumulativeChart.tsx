@@ -37,7 +37,7 @@ export const SERIES_COLORS: Record<SeriesKey, { light: string; dark: string }> =
 
 export const SERIES_ORDER: Record<SeriesMode, SeriesKey[]> = {
   platform: ['x', 'linkedin', 'youtube'],
-  account: ['sandra-x', 'dan-x', 'sandra-linkedin', 'mms-youtube'],
+  account: ['dan-x', 'sandra-x', 'mms-youtube', 'sandra-linkedin'],
 }
 
 const isPlatform = (k: SeriesKey): k is PlatformId => k in PLATFORMS
