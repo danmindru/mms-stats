@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Header } from '#/components/sections/Nav'
 import { Hero } from '#/components/sections/Hero'
-import { Ticker } from '#/components/sections/Ticker'
 import { Totals } from '#/components/sections/Totals'
 import { Platforms } from '#/components/sections/Platforms'
 import { People } from '#/components/sections/People'
@@ -17,7 +16,6 @@ function Home() {
       <Header />
       <main>
         <Hero />
-        <Ticker />
         <Totals />
         <Platforms />
         <People />

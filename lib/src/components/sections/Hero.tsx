@@ -18,12 +18,7 @@ const EASE = [0.16, 1, 0.3, 1] as const
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden">
-      <div
-        className="blueprint pointer-events-none absolute inset-x-0 top-0 h-[560px]"
-        aria-hidden
-      />
-
+    <section className="relative">
       <div className="relative mx-auto max-w-[1400px] px-5 pt-8 pb-10 sm:px-8 sm:pt-12">
         <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-end">
           <div>
@@ -39,7 +34,7 @@ export function Hero() {
               initial={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
               animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
               transition={{ duration: 1, ease: EASE, delay: 0.1 }}
-              className="mt-3 font-display text-[clamp(72px,11vw,150px)] leading-[0.92] tracking-[-0.045em] text-ink"
+              className="mt-3 font-display text-[clamp(64px,9vw,120px)] leading-[0.95] tracking-[-0.045em] text-ink"
             >
               <Counter
                 value={TOTAL_IMPRESSIONS}
