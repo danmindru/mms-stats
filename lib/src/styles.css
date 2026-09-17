@@ -1,17 +1,174 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource-variable/inter/opsz.css';
+@import '@fontsource-variable/jetbrains-mono';
 
-@import "tailwindcss";
+@theme {
+  /*
+   * Palette built around the Morning Maker Show indigo (#2b2187).
+   * Structure follows the Cohere system: white canvas, one dark band colour,
+   * a warm neutral surface, hairline rules, and a single warm accent.
+   */
+  --color-primary: #2b2187;
+  --color-primary-deep: #1c1563;
+  --color-primary-soft: #5b4fd1;
+  --color-lavender: #b7b0ee;
+  --color-pale-indigo: #efedfb;
+  --color-ink: #17152e;
+  --color-canvas: #ffffff;
+  --color-stone: #f1efea;
+  --color-stone-2: #e7e4dd;
+  --color-hairline: #dcdae6;
+  --color-muted: #8f8ca3;
+  --color-slate: #6f6c86;
+  --color-body-muted: #5c5a70;
+  --color-focus: #5b4fd1;
+  --color-sand: #e5a56e;
+  --color-sand-soft: #f2cfae;
 
-* {
-  box-sizing: border-box;
+  /* Brand */
+  --color-brand-x: #17152e;
+  --color-brand-youtube: #ff0000;
+  --color-brand-linkedin: #0a66c2;
+
+  --font-display:
+    'Space Grotesk Variable', 'CohereText', 'Inter Variable', ui-sans-serif,
+    system-ui, sans-serif;
+  --font-sans:
+    'Inter Variable', 'Unica77 Cohere Web', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    'JetBrains Mono Variable', 'CohereMono', ui-monospace, SFMono-Regular,
+    Menlo, monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-pill: 32px;
+
+  --tracking-display: -0.02em;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
 }
 
-html,
-body,
-#app {
-  min-height: 100%;
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings:
+      'ss01' on,
+      'cv11' on;
+  }
+
+  ::selection {
+    background: var(--color-lavender);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
-body {
-  margin: 0;
+@utility text-balance {
+  text-wrap: balance;
 }
 
+@utility text-pretty {
+  text-wrap: pretty;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Uppercase mono label used for system markers. */
+@utility mono-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Fine film grain over dark bands. */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    border-radius: inherit;
+    z-index: 1;
+  }
+}
+
+/* Faint blueprint grid for the hero canvas. */
+@utility blueprint {
+  background-image:
+    linear-gradient(to right, rgba(43, 33, 135, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(43, 33, 135, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 0%,
+    black 30%,
+    transparent 100%
+  );
+}
+
+@utility blueprint-dark {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Recharts resets so tooltips/cursors inherit the design system. */
+.recharts-wrapper,
+.recharts-surface {
+  outline: none;
+}
+.recharts-cartesian-axis-tick text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
