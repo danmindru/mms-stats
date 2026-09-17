@@ -19,7 +19,6 @@ import { SpotlightCard } from '#/components/ui/SpotlightCard'
 import {
   COMBINED_CUMULATIVE,
   MILESTONES,
-  MONTHS,
   MONTH_LABELS,
   TOTAL_AUDIENCE,
   TOTAL_ENGAGEMENTS,
@@ -91,9 +90,8 @@ export function Totals() {
             </h2>
           </div>
           <p className="max-w-[560px] text-[17px] leading-[1.45] text-body-muted lg:justify-self-end">
-            Every chart on this page is a yearly running total. Hover the
-            chart to see the total at any month. Click a label to hide or show
-            that part.
+            Explore our reach over the past year. Hover the chart to see the
+            total at any month. Click a label to hide or show that part.
           </p>
         </Reveal>
 
@@ -135,6 +133,7 @@ export function Totals() {
         <Reveal
           className="mt-6 overflow-hidden rounded-lg bg-white ring-1 ring-hairline"
           delay={0.1}
+          blur={false}
         >
           <div className="flex flex-col gap-5 border-b border-hairline p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div className="flex flex-col gap-1">
@@ -216,10 +215,7 @@ export function Totals() {
           {MILESTONES.map((m) => (
             <p key={m.threshold} className="rounded-md bg-stone p-4">
               Passed <span className="text-ink">{compact(m.threshold)}</span> in{' '}
-              <span className="text-ink">
-                {MONTHS[m.monthIndex]} {m.monthIndex <= 3 ? '2025' : '2026'}
-              </span>
-              .
+              <span className="text-ink">{m.when}</span>.
             </p>
           ))}
         </Reveal>

@@ -3,12 +3,16 @@
  * Figures are copied from the source noted on each entry.
  */
 
+import { ACCOUNTS } from '#/data/stats'
+
 export type PropertyKind = 'site' | 'podcast' | 'newsletter' | 'product' | 'social'
 
 export interface Property {
   id: string
   name: string
   kind: PropertyKind
+  /** For social accounts: which network. */
+  platform?: 'x' | 'linkedin'
   url: string
   /** Square icon served from /public. */
   icon: string
@@ -23,8 +27,8 @@ export interface Property {
     label: string
     source: string
   }
-  /** Extra links, e.g. the two podcast apps. */
-  links?: { label: string; url: string; icon: 'spotify' | 'apple' }[]
+  /** Extra links, e.g. the two podcast apps or a video. */
+  links?: { label: string; url: string; icon: 'spotify' | 'apple' | 'youtube' }[]
   /** Wide preview image (og image of the property), optional. */
   preview?: string
   /** Which part of the preview to keep when cropped. */
@@ -95,13 +99,6 @@ export const PROPERTIES: Property[] = [
     preview: '/properties/mms-preview.jpg',
     previewPosition: 'right',
     what: 'Every episode with a transcript, the blog, and links to what makers were building.',
-    stat: {
-      value: 40,
-      format: 'raw',
-      suffix: '+',
-      label: 'domain rating',
-      source: 'morningmakershow.com/sponsor',
-    },
   },
   {
     id: 'ralphloop',
@@ -111,15 +108,71 @@ export const PROPERTIES: Property[] = [
     icon: '/properties/ralphloop.png',
     preview: '/properties/ralphloop-preview.jpg',
     previewPosition: 'center',
-    what: 'A long-running AI agent loop that codes for days. One of the tools we build and use on the show.',
+    what: 'Ralph is an open source project that helps people vibe code entire apps and was developed by Dan on the Morning Maker Show YouTube.',
+    links: [
+      {
+        label: 'Watch the episode',
+        url: 'https://youtu.be/3TL8Ez66I3o',
+        icon: 'youtube',
+      },
+    ],
   },
   {
     id: 'x',
     name: '@morningmakersho',
     kind: 'social',
+    platform: 'x',
     url: 'https://x.com/morningmakersho',
     icon: '/avatars/mms.png',
     what: 'The show’s own account on X. Clips, episode notes and the makers we read on air.',
+  },
+  {
+    id: 'dan-x',
+    name: ACCOUNTS['dan-x'].handle,
+    kind: 'social',
+    platform: 'x',
+    url: ACCOUNTS['dan-x'].url,
+    icon: '/avatars/dan.png',
+    what: 'Dan on X. Posts about the tools and demos he builds, many of them from the show.',
+    stat: {
+      value: ACCOUNTS['dan-x'].total,
+      format: 'compact',
+      decimals: 1,
+      label: 'impressions in the past year',
+      source: 'X Analytics, past year. 32.2K followers.',
+    },
+  },
+  {
+    id: 'sandra-x',
+    name: ACCOUNTS['sandra-x'].handle,
+    kind: 'social',
+    platform: 'x',
+    url: ACCOUNTS['sandra-x'].url,
+    icon: '/avatars/sandra.png',
+    what: 'Sandra on X. Daily posts about work and the internet.',
+    stat: {
+      value: ACCOUNTS['sandra-x'].total,
+      format: 'compact',
+      decimals: 1,
+      label: 'impressions in the past year',
+      source: 'X Analytics, past year. 22.8K followers.',
+    },
+  },
+  {
+    id: 'sandra-linkedin',
+    name: 'Sandra on LinkedIn',
+    kind: 'social',
+    platform: 'linkedin',
+    url: ACCOUNTS['sandra-linkedin'].url,
+    icon: '/avatars/sandra.png',
+    what: 'Sandra on LinkedIn. Longer posts, mostly about work and what we learn from makers on the show.',
+    stat: {
+      value: ACCOUNTS['sandra-linkedin'].total,
+      format: 'compact',
+      decimals: 1,
+      label: 'impressions in the past year',
+      source: 'LinkedIn Content analytics, 400-day window.',
+    },
   },
 ]
 
@@ -147,7 +200,10 @@ export interface Sponsor {
 
 const ref = (u: string) => `${u}${u.includes('?') ? '&' : '?'}ref=morningmaker`
 
-/** From morningmakershow.com/sponsor, in the order shown there. */
+/**
+ * From morningmakershow.com/sponsor, in the order shown there. PostHog, Lemon
+ * Squeezy and BuildShip sit at partner level alongside the other partners.
+ */
 export const SPONSORS: Sponsor[] = [
   {
     id: 'sentry',
@@ -158,8 +214,8 @@ export const SPONSORS: Sponsor[] = [
     logoDark: '/logos/sentry-dark.svg',
     height: 40,
     what: 'Error and performance monitoring',
-    note: 'The show’s headline sponsor. Sentry is in the episodes, the newsletter and the blog, where Dan writes about fixing bugs with Sentry and Seer. We use it on our own products too.',
-    placements: ['Show', 'Newsletter', 'Blog', 'Site', 'Our products'],
+    note: 'Our headline sponsor for over two years. Sentry is the debugging platform used by more than 4 million developers and 150,000 organisations, including GitHub, Cloudflare and Vercel. It is in the episodes, the newsletter and the blog, where Dan writes about fixing bugs with Sentry and Seer, and it runs on our own products.',
+    placements: ['Show', 'Newsletter', 'Blog', 'Site', 'Our products', '2+ years'],
   },
   {
     id: 'sevalla',
@@ -195,7 +251,7 @@ export const SPONSORS: Sponsor[] = [
     id: 'posthog',
     name: 'PostHog',
     url: ref('https://posthog.com'),
-    tier: 'sponsor',
+    tier: 'partner',
     logo: '/logos/posthog-light.png',
     logoDark: '/logos/posthog-dark.png',
     height: 34,
@@ -205,7 +261,7 @@ export const SPONSORS: Sponsor[] = [
     id: 'lemonsqueezy',
     name: 'Lemon Squeezy',
     url: ref('https://lemonsqueezy.com'),
-    tier: 'sponsor',
+    tier: 'partner',
     logo: '/logos/lemonsqueezy-light.svg',
     logoDark: '/logos/lemonsqueezy-dark.svg',
     height: 30,
@@ -215,7 +271,7 @@ export const SPONSORS: Sponsor[] = [
     id: 'buildship',
     name: 'BuildShip',
     url: ref('https://buildship.com'),
-    tier: 'sponsor',
+    tier: 'partner',
     logo: '/logos/buildship-light.webp',
     logoDark: '/logos/buildship-dark.webp',
     height: 34,
@@ -290,16 +346,6 @@ export const SPONSORS: Sponsor[] = [
     what: 'A browser for research',
   },
   {
-    id: 'shipixen',
-    name: 'Shipixen',
-    url: ref('https://shipixen.com'),
-    tier: 'sponsor',
-    logo: '/logos/shipixen-light.webp',
-    logoDark: '/logos/shipixen-dark.webp',
-    height: 40,
-    what: 'Next.js boilerplate generator',
-  },
-  {
     id: 'uglyduckling',
     name: 'Ugly Duckling',
     url: ref('https://uglyduckling.app/'),
@@ -308,25 +354,6 @@ export const SPONSORS: Sponsor[] = [
     height: 30,
     iconOnly: true,
     what: 'Design feedback',
-  },
-  {
-    id: 'microassets',
-    name: 'Microassets',
-    url: ref('https://microassets.co'),
-    tier: 'sponsor',
-    logo: '/logos/microassets-light.webp',
-    height: 34,
-    what: 'Buy and sell small products',
-  },
-  {
-    id: 'pageui',
-    name: 'Page UI',
-    url: ref('https://pageui.dev'),
-    tier: 'sponsor',
-    logo: '/logos/pageui-light.webp',
-    height: 40,
-    iconOnly: true,
-    what: 'Landing page components',
   },
   {
     id: 'seostuff',

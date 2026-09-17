@@ -16,8 +16,10 @@ const KIND: Record<PropertyKind, { label: string; icon: typeof Globe }> = {
   podcast: { label: 'podcast', icon: Podcast },
   newsletter: { label: 'newsletter', icon: Mail },
   product: { label: 'product', icon: Wrench },
-  social: { label: 'on X', icon: Globe },
+  social: { label: 'account', icon: Globe },
 }
+
+const SOCIAL_LABEL = { x: 'on X', linkedin: 'on LinkedIn' } as const
 
 export function Properties() {
   return (
@@ -32,8 +34,8 @@ export function Properties() {
           </div>
           <p className="max-w-[560px] text-[17px] leading-[1.45] text-body-muted lg:justify-self-end">
             The show is the centre. Around it: a website people find on Google,
-            a podcast, a newsletter, tools we build and use on air, and the
-            show’s own account on X. A sponsor shows up in all of them.
+            a podcast, a newsletter, tools we build and use on air, and our own
+            accounts on X and LinkedIn. A sponsor shows up in all of them.
           </p>
         </Reveal>
 
@@ -55,7 +57,7 @@ export function Properties() {
               companies we work with · {SPONSORS.length}
             </div>
             <h2 className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] leading-[1] tracking-[-0.02em] text-ink">
-              Brought to you by
+              We work with the best
             </h2>
           </div>
           <p className="max-w-[560px] text-[17px] leading-[1.45] text-body-muted lg:justify-self-end">
@@ -65,15 +67,19 @@ export function Properties() {
           </p>
         </Reveal>
 
-        <div className="mt-10 grid gap-3 lg:grid-cols-[1.3fr_1fr]">
+        <div className="mt-10 grid gap-3 lg:grid-cols-[1fr_1.1fr]">
           {SPONSORS_BY_TIER.headline.map((s) => (
-            <Reveal key={s.id}>
+            <Reveal key={s.id} className="h-full">
               <SponsorFeature s={s} tier="headline sponsor" big />
             </Reveal>
           ))}
-          <RevealGroup className="grid gap-3" stagger={0.08} delay={0.1}>
+          <RevealGroup
+            className="grid gap-3 sm:grid-cols-2"
+            stagger={0.08}
+            delay={0.1}
+          >
             {SPONSORS_BY_TIER.partner.map((s) => (
-              <RevealItem key={s.id}>
+              <RevealItem key={s.id} className="h-full">
                 <SponsorFeature s={s} tier="partner" />
               </RevealItem>
             ))}
@@ -90,7 +96,7 @@ export function Properties() {
 
 function PropertyCard({ p }: { p: Property }) {
   const kind = KIND[p.kind]
-  const isX = p.kind === 'social'
+  const social = p.kind === 'social' ? (p.platform ?? 'x') : null
   const pos =
     p.previewPosition === 'right'
       ? 'object-right'
@@ -116,15 +122,15 @@ function PropertyCard({ p }: { p: Property }) {
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/70 via-white/10 to-transparent" />
             </>
           ) : (
-            <GlyphField kind={p.kind} />
+            <GlyphField kind={p.kind} platform={social ?? undefined} />
           )}
           <span className="mono-label absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-xl bg-white/85 px-2 py-1 text-[10px] text-slate ring-1 ring-ink/5 backdrop-blur">
-            {isX ? (
-              <PlatformLogo platform="x" size={9} />
+            {social ? (
+              <PlatformLogo platform={social} size={9} />
             ) : (
               <kind.icon size={11} strokeWidth={1.75} />
             )}
-            {kind.label}
+            {social ? SOCIAL_LABEL[social] : kind.label}
           </span>
         </div>
 
@@ -143,9 +149,14 @@ function PropertyCard({ p }: { p: Property }) {
                 draggable={false}
                 className="h-full w-full object-cover"
               />
-              {isX && (
-                <span className="absolute right-0 bottom-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink text-white ring-2 ring-white">
-                  <PlatformLogo platform="x" size={9} />
+              {social && (
+                <span
+                  className={cn(
+                    'absolute right-0 bottom-0 inline-flex h-5 w-5 items-center justify-center rounded-full text-white ring-2 ring-white',
+                    social === 'linkedin' ? 'bg-brand-linkedin' : 'bg-ink',
+                  )}
+                >
+                  <PlatformLogo platform={social} size={9} />
                 </span>
               )}
             </motion.span>
@@ -206,11 +217,15 @@ function PropertyCard({ p }: { p: Property }) {
                       'inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-[13px] ring-1 transition-all hover:-translate-y-0.5',
                       l.icon === 'spotify'
                         ? 'bg-[#1db954]/10 text-[#137a3a] ring-[#1db954]/30 hover:bg-[#1db954]/20'
-                        : 'bg-pale text-primary ring-primary/20 hover:bg-pale-2',
+                        : l.icon === 'youtube'
+                          ? 'bg-brand-youtube/10 text-[#b91c1c] ring-brand-youtube/25 hover:bg-brand-youtube/15'
+                          : 'bg-pale text-primary ring-primary/20 hover:bg-pale-2',
                     )}
                   >
                     {l.icon === 'spotify' ? (
                       <SpotifyLogo size={13} />
+                    ) : l.icon === 'youtube' ? (
+                      <PlatformLogo platform="youtube" size={13} />
                     ) : (
                       <Podcast size={13} />
                     )}
@@ -227,7 +242,13 @@ function PropertyCard({ p }: { p: Property }) {
 }
 
 /** Soft field of floating glyphs for properties without a preview image. */
-function GlyphField({ kind }: { kind: PropertyKind }) {
+function GlyphField({
+  kind,
+  platform = 'x',
+}: {
+  kind: PropertyKind
+  platform?: 'x' | 'linkedin'
+}) {
   const glyphs =
     kind === 'podcast'
       ? [
@@ -237,9 +258,9 @@ function GlyphField({ kind }: { kind: PropertyKind }) {
         ]
       : kind === 'social'
         ? [
-            <PlatformLogo key="x" platform="x" size={34} />,
-            <PlatformLogo key="x2" platform="x" size={20} />,
-            <PlatformLogo key="x3" platform="x" size={26} />,
+            <PlatformLogo key="p" platform={platform} size={34} />,
+            <PlatformLogo key="p2" platform={platform} size={20} />,
+            <PlatformLogo key="p3" platform={platform} size={26} />,
           ]
         : [<Globe key="g" size={34} strokeWidth={1.5} />]
   const spots = [
@@ -256,7 +277,8 @@ function GlyphField({ kind }: { kind: PropertyKind }) {
             key={i}
             className="absolute text-primary/40 transition-colors duration-500 group-hover:text-primary/70"
             style={{ left: sp.left, top: sp.top }}
-            animate={{ y: [0, -6, 0] }}
+            /* Float only while on screen; an always-on loop per glyph adds up. */
+            whileInView={{ y: [0, -6, 0] }}
             transition={{
               duration: 4 + i,
               repeat: Infinity,
@@ -347,23 +369,27 @@ function SponsorFeature({
         href={s.url}
         target="_blank"
         rel="noreferrer"
-        className="group flex h-full items-center justify-between gap-6 p-6"
+        className="group flex h-full flex-col gap-5 p-5 sm:p-6"
       >
-        <span className="mono-label text-muted">{tier}</span>
-        <div className="flex flex-1 items-center gap-5">
-          <motion.img
-            src={s.logo}
-            alt={s.name}
-            draggable={false}
-            style={{ height: s.height }}
-            className="w-auto max-w-full object-contain"
-            whileHover={{ scale: 1.03 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+        <div className="flex items-center justify-between">
+          <span className="mono-label text-muted">{tier}</span>
+          <ArrowUpRight
+            size={14}
+            className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink"
           />
-          <div className="ml-auto text-right">
-            <div className="text-[14px] text-ink">{s.name}</div>
-            <div className="text-[13px] text-slate">{s.what}</div>
-          </div>
+        </div>
+        <motion.img
+          src={s.logo}
+          alt={s.name}
+          draggable={false}
+          style={{ height: Math.min(s.height, 32) }}
+          className="w-auto max-w-[160px] self-start object-contain"
+          whileHover={{ scale: 1.03 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+        />
+        <div className="mt-auto">
+          <div className="text-[14px] text-ink">{s.name}</div>
+          <div className="text-[13px] text-slate">{s.what}</div>
         </div>
       </a>
     </SpotlightCard>

@@ -2,8 +2,8 @@
  * Morning Maker Show on YouTube, in depth.
  *
  * Two windows, both read from YouTube Studio (stats/morning-maker-show-youtube):
- *   total  – channel lifetime, Mar 11 2024 -> Sep 15 2026 (31 monthly buckets)
- *   year   – last 365 days, Sep 16 2025 -> Sep 15 2026 (13 buckets, both
+ *   total  – channel lifetime, Mar 11 2024 -> Sep 17 2026 (31 monthly buckets)
+ *   year   – last 365 days, Sep 17 2025 -> Sep 17 2026 (13 buckets, both
  *            Septembers partial; same buckets as the rest of the page)
  *
  * Headline totals are copied verbatim. Monthly shapes are read off the native
@@ -88,8 +88,8 @@ export const YOUTUBE: Record<YoutubeWindow, YoutubeWindowData> = {
   total: {
     id: 'total',
     label: 'Total',
-    range: 'Mar 11, 2024 – Sep 15, 2026',
-    days: 919,
+    range: 'Mar 11, 2024 – Sep 17, 2026',
+    days: 921,
     views: series(
       [...PRIOR_LABELS, ...YEAR_LABELS],
       [...PRIOR_VIEWS, ...YEAR_VIEWS],
@@ -110,7 +110,7 @@ export const YOUTUBE: Record<YoutubeWindow, YoutubeWindowData> = {
   year: {
     id: 'year',
     label: 'Past year',
-    range: 'Sep 16, 2025 – Sep 15, 2026',
+    range: 'Sep 17, 2025 – Sep 17, 2026',
     days: 365,
     views: series(YEAR_LABELS, YEAR_VIEWS, 221_414),
     hours: series(YEAR_LABELS, YEAR_HOURS, 10_200),
@@ -154,17 +154,38 @@ export const YOUTUBE_METRICS: {
 export const YOUTUBE_NOW = {
   subscribers: 11_065,
   since: 'Mar 11, 2024',
-  /** Most-watched videos over the last 48 hours in YouTube Studio, Sep 15 2026. */
-  topRightNow: [
-    'Vibe coding beautiful UIs',
-    'Cursor Rules guide',
-    'Complete Docker sandbox',
-  ],
 }
 
-/** Biggest days on the channel, read from the lifetime daily chart. */
-export const YOUTUBE_PEAKS = [
-  { when: 'Jun 2025', views: 12_000, note: 'One video took off; 12K views in a day.' },
-  { when: 'Nov 2025', views: 11_000, note: 'Second big day, 11K views. Watch time and subscribers spiked with it.' },
-  { when: 'Feb 2026', views: 5_000, note: 'No single spike. A month of steady 3–5K days.' },
+export interface YoutubeVideo {
+  /** YouTube video id, used for the link and the thumbnail. */
+  id: string
+  title: string
+  views: number
+  duration: string
+}
+
+/** The three most watched videos over the past year, from YouTube Studio on Sep 17, 2026. */
+export const YOUTUBE_TOP_VIDEOS: YoutubeVideo[] = [
+  {
+    id: 'p_q7-iW606U',
+    title: 'Vibe coding beautiful UIs in 3 simple steps',
+    views: 156_000,
+    duration: '8:10',
+  },
+  {
+    id: 'dH4mc9VQ96g',
+    title: 'TaskMaster AI and Cursor setup guide for vibe coding entire apps',
+    views: 74_000,
+    duration: '17:17',
+  },
+  {
+    id: 'FpJ48a5S5lU',
+    title: 'Cursor Rules guide for lazy devs',
+    views: 38_000,
+    duration: '9:27',
+  },
 ]
+
+export const youtubeUrl = (id: string) => `https://youtu.be/${id}`
+export const youtubeThumb = (id: string) =>
+  `https://i.ytimg.com/vi/${id}/hqdefault.jpg`

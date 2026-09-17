@@ -32,7 +32,12 @@ export function Hero() {
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                filter: 'blur(0px)',
+                transitionEnd: { filter: 'none' },
+              }}
               transition={{ duration: 1, ease: EASE, delay: 0.1 }}
               className="mt-3 font-display text-[clamp(64px,9vw,120px)] leading-[0.95] tracking-[-0.045em] text-ink"
             >

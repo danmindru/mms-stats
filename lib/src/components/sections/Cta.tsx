@@ -9,16 +9,20 @@ import { compact } from '#/lib/format'
 
 const OFFERS = [
   {
-    title: 'Sponsored episode',
-    body: 'A part of an episode where we use your product on air and say what we think of it.',
+    title: 'A long-term partnership',
+    body: 'Months, not one-offs. Your product becomes part of the show and part of the startups Dan and Sandra run, so it keeps coming up long after the first mention.',
+  },
+  {
+    title: 'Sponsored episodes',
+    body: 'We use your product on air, episode after episode, and say what we think of it.',
   },
   {
     title: 'Posts on X and LinkedIn',
     body: 'Posts written by us, in our own words, on our own accounts.',
   },
   {
-    title: 'A build on the show',
-    body: 'Dan uses your product to build something during an episode.',
+    title: 'Builds on the show',
+    body: 'Dan builds with your product during episodes, and it stays in the stack afterwards.',
   },
 ]
 
@@ -38,13 +42,15 @@ export function Cta() {
             </h2>
             <p className="mt-6 max-w-[54ch] text-[17px] leading-[1.45] text-body-muted">
               We take a few sponsors a year, and only for tools we would use
-              anyway. The four accounts on this page had{' '}
-              {compact(TOTAL_IMPRESSIONS)} yearly impressions. Three ways to
-              work together are listed on the right.
+              anyway. We look for partners who want to stay for the long run:
+              Dan and Sandra adopt your product in their own startups, so it
+              shows up in episodes, builds and posts for months rather than
+              once. The four accounts on this page had{' '}
+              {compact(TOTAL_IMPRESSIONS)} yearly impressions.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button
-                href="mailto:hello@morningmaker.show?subject=Working%20together"
+                href="mailto:sandra@morningmakershow.com?subject=Working%20together"
                 arrow
               >
                 <span className="inline-flex items-center gap-2">

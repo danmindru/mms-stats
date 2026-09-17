@@ -183,7 +183,7 @@ export function Story() {
         <div className="relative z-[2] mx-auto max-w-[1400px] px-5 pt-14 pb-16 sm:px-10 sm:pb-24">
           <Reveal className="flex flex-col gap-4 border-t border-white/15 pt-8 sm:flex-row sm:items-center sm:justify-between">
             <span className="mono-label text-white/70">
-              one episode ends up on
+              we spread the word on
             </span>
             <ul className="flex flex-wrap gap-2">
               {OUTLETS.map((o, i) => (

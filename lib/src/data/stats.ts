@@ -1,8 +1,8 @@
 /**
  * Source of truth for the viz. Every number here is read from the native
  * analytics exports in /stats (X Analytics, YouTube Studio, LinkedIn Content
- * analytics). Yearly window: Sep 16 2025 -> Sep 15 2026 (365 days), except
- * LinkedIn which only exposes a 400 day window (Aug 13 2025 -> Sep 16 2026).
+ * analytics). Yearly window: Sep 17 2025 -> Sep 17 2026 (365 days), except
+ * LinkedIn which only exposes a 400 day window (Aug 14 2025 -> Sep 17 2026).
  *
  * Monthly values are read off the bar/line charts in the screenshots and then
  * normalised so they sum exactly to the reported yearly totals. Headline
@@ -34,8 +34,8 @@ export const MONTH_LABELS = MONTHS.map((m, i) =>
 )
 
 export const WINDOW = {
-  start: 'Sep 16, 2025',
-  end: 'Sep 15, 2026',
+  start: 'Sep 17, 2025',
+  end: 'Sep 17, 2026',
   short: 'Sep 2025 – Sep 2026',
   days: 365,
 }
@@ -229,7 +229,7 @@ export const ACCOUNTS: Record<AccountId, Account> = {
       2_517_928,
     ),
     windowNote:
-      'Aug 13, 2025 → Sep 16, 2026 (LinkedIn reports a 400-day window)',
+      'Aug 14, 2025 → Sep 17, 2026 (LinkedIn reports a 400-day window)',
     metrics: [
       { label: 'Impressions', value: 2_517_928, delta: 58 },
       { label: 'Social engagements', value: 34_336 },
@@ -302,8 +302,13 @@ export const TOTAL_WATCH_HOURS = metric('mms-youtube', 'Watch time')
 /** Average impressions per day over the yearly window. */
 export const PER_DAY = Math.round(TOTAL_IMPRESSIONS / WINDOW.days)
 
-/** Month in which the running total first passed each threshold. */
-export const MILESTONES = [10_000_000, 25_000_000, 50_000_000].map((t) => ({
-  threshold: t,
-  monthIndex: COMBINED_CUMULATIVE.findIndex((v) => v >= t),
-}))
+/**
+ * Month in which the running total first passed each threshold, read from
+ * the native analytics. Stated explicitly: the scaled monthly buckets are
+ * approximate and can land a threshold a month early.
+ */
+export const MILESTONES: { threshold: number; when: string }[] = [
+  { threshold: 10_000_000, when: 'Oct 2025' },
+  { threshold: 25_000_000, when: 'Oct 2025' },
+  { threshold: 50_000_000, when: 'Mar 2026' },
+]

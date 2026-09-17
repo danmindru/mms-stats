@@ -26,7 +26,7 @@ is the single source of truth:
   normalised so they sum exactly to the reported totals.
 - YouTube counts _views_; X and LinkedIn count _impressions_. Both roll into the
   combined figure, and this is stated in the footer.
-- LinkedIn only exposes a 400-day window (Aug 13 2025 → Sep 16 2026); shown as
+- LinkedIn only exposes a 400-day window (Aug 14 2025 → Sep 17 2026); shown as
   reported.
 
 Derived aggregates (per platform, cumulative series, milestones) are computed

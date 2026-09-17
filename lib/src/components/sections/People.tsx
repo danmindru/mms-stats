@@ -98,7 +98,10 @@ export function People() {
           aria-hidden
         />
         <div className="relative z-[2] mx-auto max-w-[1400px] px-5 py-16 sm:px-10 sm:py-24">
-          <Reveal className="grid gap-8 lg:grid-cols-[1fr_1.3fr] lg:items-end">
+          <Reveal
+            className="grid gap-8 lg:grid-cols-[1fr_1.3fr] lg:items-end"
+            blur={false}
+          >
             <div>
               <div className="mono-label text-white/70">03 — who</div>
               <div className="mt-5">
@@ -191,7 +194,7 @@ function AccountCard({
     <motion.article
       whileHover={{ y: -3 }}
       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-      className="flex h-full flex-col rounded-lg bg-white/[0.08] p-5 ring-1 ring-white/15 backdrop-blur-sm sm:p-6"
+      className="flex h-full flex-col rounded-lg bg-white/[0.08] p-5 ring-1 ring-white/15 sm:p-6"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">

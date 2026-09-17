@@ -21,6 +21,11 @@ interface CounterProps {
 /**
  * Animated numeral. Starts at zero and rolls to `value` the first time it
  * enters the viewport. Built on NumberFlow so digits spin rather than blur.
+ *
+ * NumberFlow's `willChange` is deliberately left off: it puts
+ * `will-change: transform` on every digit, which with a few dozen counters on
+ * the page pins close to a thousand elements to their own compositor layers
+ * for the whole session and makes scrolling heavy.
  */
 export function Counter({
   value,
@@ -67,7 +72,6 @@ export function Counter({
           }}
           spinTiming={{ duration: 1400, easing: 'cubic-bezier(0.16,1,0.3,1)' }}
           opacityTiming={{ duration: 400, easing: 'ease-out' }}
-          willChange
         />
         <span className={cn('ml-[0.04em]', suffixClassName)}>{s}</span>
         {suffix}
@@ -94,7 +98,6 @@ export function Counter({
         }}
         spinTiming={{ duration: 1600, easing: 'cubic-bezier(0.16,1,0.3,1)' }}
         opacityTiming={{ duration: 400, easing: 'ease-out' }}
-        willChange
       />
       {suffix && <span className={suffixClassName}>{suffix}</span>}
     </span>

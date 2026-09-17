@@ -33,7 +33,7 @@ export function Footer() {
               days).
             </li>
             <li>
-              LinkedIn only reports a 400-day window (Aug 13, 2025 to Sep 16,
+              LinkedIn only reports a 400-day window (Aug 14, 2025 to Sep 17,
               2026). Shown as reported.
             </li>
             <li>
@@ -68,7 +68,7 @@ export function Footer() {
                 </a>
               </li>
             ))}
-            {PROPERTIES.filter((p) => p.id !== 'x').map((p) => (
+            {PROPERTIES.filter((p) => p.kind !== 'social').map((p) => (
               <li key={p.id}>
                 <a
                   href={p.url}
@@ -93,7 +93,7 @@ export function Footer() {
       <div className="border-t border-white/15">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-5 py-5 text-[12px] text-white/60 sm:px-8">
           <span>© {new Date().getFullYear()} Dan &amp; Sandra</span>
-          <span className="mono-label text-[10px]">updated Sep 16, 2026</span>
+          <span className="mono-label text-[10px]">updated Sep 17, 2026</span>
         </div>
       </div>
     </footer>

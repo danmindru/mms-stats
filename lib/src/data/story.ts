@@ -18,27 +18,27 @@ export const FRAMES: Frame[] = [
   {
     id: 'live',
     index: '01',
-    kicker: 'Monday and Friday, early',
-    title: 'Good morning. We go live.',
-    body: 'Dan and Sandra read what makers posted under #buildinpublic since the last show: launches, numbers, struggles, the odd piano in a park. Live on YouTube and X, then out as a podcast.',
+    kicker: 'why we do this',
+    title: 'Good Morning',
+    body: 'Our mission is to get people to ship and earn their first internet dollar. Your product will be part of this journey and hopefully, change some people’s lives.',
     image: '/story/live.webp',
     alt: 'Dan and Sandra at a desk with a microphone, going live in the morning.',
   },
   {
     id: 'tryout',
     index: '02',
-    kicker: 'When we share a product',
-    title: 'We try it on air.',
-    body: 'We open it and use it in front of everyone. If it is good we say so. If something breaks, that is in the show too. People trust that, which is the whole point.',
+    kicker: 'how we do this',
+    title: 'We use it',
+    body: 'We use your product on air, in front of the people we are helping to ship, and in the things we build ourselves. If it is good we say so. If something breaks, that is in the show too. People trust that, which is the whole point.',
     image: '/story/tryout.webp',
-    alt: 'Dan typing while Sandra points at the screen, trying a product on air.',
+    alt: 'Dan typing while Sandra points at the screen, using a product on air.',
   },
   {
     id: 'travel',
     index: '03',
-    kicker: 'After the show',
+    kicker: 'the impact',
     title: 'Then it travels.',
-    body: 'One episode becomes a podcast on Spotify and Apple, a newsletter with a 65% open rate, posts on our X and LinkedIn accounts, and a spot on Hunted.Space. Most sponsors stay for months. We end up using their tools in our own products.',
+    body: 'Your product is woven into our long-form videos, then becomes shorts and posts shared across YouTube, X and LinkedIn over the weeks, reaching millions. People subconsciously think about your product. That is why sponsors stay for months, not one-offs.',
     image: '/story/travel.webp',
     alt: 'The show at the centre with lines reaching out to a community of builders.',
   },
@@ -50,7 +50,7 @@ export const AUDIENCE = {
   body: 'Makers, solo founders and small teams who ship. The people who pick their own tools and tell each other what works.',
 }
 
-/** Where one episode ends up. */
+/** Where we spread the word. */
 export const OUTLETS: { label: string; icon: 'youtube' | 'x' | 'linkedin' | 'spotify' | 'apple' | 'mail' | 'hunted' }[] = [
   { label: 'YouTube', icon: 'youtube' },
   { label: 'X', icon: 'x' },

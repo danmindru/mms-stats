@@ -3,6 +3,7 @@ import {
   useMotionTemplate,
   useMotionValue,
   useSpring,
+  useTransform,
 } from 'motion/react'
 import type { MouseEvent, ReactNode } from 'react'
 import { cn } from '#/lib/format'
@@ -36,6 +37,15 @@ export function SpotlightCard({
   const ry = useMotionValue(0)
   const srx = useSpring(rx, { stiffness: 180, damping: 22 })
   const sry = useSpring(ry, { stiffness: 180, damping: 22 })
+  /*
+   * Perspective only while the card is actually tilted. A constant
+   * `perspective()` is a 3D transform, which would keep every card on its own
+   * compositor layer even at rest; at 0 Motion drops it and the transform
+   * collapses to `none`, so idle cards paint like plain boxes.
+   */
+  const perspective = useTransform([srx, sry], ([a, b]) =>
+    Math.abs(a as number) > 0.01 || Math.abs(b as number) > 0.01 ? 1200 : 0,
+  )
 
   const background = useMotionTemplate`radial-gradient(420px circle at ${mx}px ${my}px, ${glow}, transparent 65%)`
   const border = useMotionTemplate`radial-gradient(260px circle at ${mx}px ${my}px, ${
@@ -67,7 +77,7 @@ export function SpotlightCard({
       style={{
         rotateX: tilt ? srx : 0,
         rotateY: tilt ? sry : 0,
-        transformPerspective: 1200,
+        transformPerspective: tilt ? perspective : 0,
       }}
       className={cn(
         'group/card relative overflow-hidden rounded-lg',
@@ -93,7 +103,7 @@ export function SpotlightCard({
         className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
         style={{ background }}
       />
-      <div className="relative">{children}</div>
+      <div className="relative h-full">{children}</div>
     </motion.div>
   )
 }

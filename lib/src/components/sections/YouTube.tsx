@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
-import { ArrowUpRight, Clock, Eye, TrendingUp, UserPlus } from 'lucide-react'
+import { ArrowUpRight, Clock, Eye, Play, TrendingUp, UserPlus } from 'lucide-react'
 import { ShowIcon } from '#/components/brand/Avatar'
 import { PlatformLogo } from '#/components/brand/PlatformLogo'
 import { ClientChart } from '#/components/charts/ClientChart'
@@ -15,9 +15,11 @@ import {
   YOUTUBE,
   YOUTUBE_METRICS,
   YOUTUBE_NOW,
-  YOUTUBE_PEAKS,
+  YOUTUBE_TOP_VIDEOS,
+  youtubeThumb,
+  youtubeUrl,
 } from '#/data/youtube'
-import type { YoutubeMetric, YoutubeWindow } from '#/data/youtube'
+import type { YoutubeMetric, YoutubeVideo, YoutubeWindow } from '#/data/youtube'
 import { cn, compact, formatMetric, full } from '#/lib/format'
 
 const ICON: Record<YoutubeMetric, typeof Eye> = {
@@ -81,10 +83,8 @@ export function YouTube() {
           </div>
           <div className="lg:justify-self-end">
             <p className="max-w-[560px] text-[17px] leading-[1.45] text-body-muted">
-              Views, watch time and subscribers for the channel. Total is
-              everything since the first episode on {YOUTUBE_NOW.since}. Past
-              year is the same window as the rest of this page. Every chart is a
-              running total.
+              Views, watch time and subscribers for the channel since the
+              beginning or just for last year.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-4">
               <Segmented<YoutubeWindow>
@@ -202,12 +202,12 @@ export function YouTube() {
         </RevealGroup>
 
         {/* big chart */}
-        <Reveal delay={0.1} className="mt-6">
+        <Reveal delay={0.1} className="mt-6" blur={false}>
           <div className="rounded-lg bg-white ring-1 ring-hairline">
             <div className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline px-5 py-5 sm:px-7">
               <div>
                 <div className="mono-label text-muted">
-                  running total · {spec.label.toLowerCase()} ·{' '}
+                  total YouTube {spec.label.toLowerCase()} ·{' '}
                   <span className="text-ink">{shownLabel}</span>
                 </div>
                 <div className="mt-2 font-display text-[clamp(40px,5vw,72px)] leading-none tracking-[-0.04em] text-ink">
@@ -221,17 +221,11 @@ export function YouTube() {
                   />
                 </div>
               </div>
-              <dl className="grid grid-cols-2 gap-x-8 gap-y-2 text-[13px] sm:grid-cols-3">
+              <dl className="grid grid-cols-2 gap-x-8 gap-y-2 text-[13px]">
                 <div>
                   <dt className="text-slate">per day</dt>
                   <dd className="tabular font-display text-[18px] text-ink">
                     {metric === 'hours' ? `${full(perDay)} h` : full(perDay)}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-slate">est. revenue</dt>
-                  <dd className="tabular font-display text-[18px] text-ink">
-                    {formatMetric(data.revenue, 'currency')}
                   </dd>
                 </div>
                 <div>
@@ -260,71 +254,91 @@ export function YouTube() {
           </div>
         </Reveal>
 
-        {/* facts */}
-        <RevealGroup className="mt-6 grid gap-3 lg:grid-cols-3" stagger={0.08}>
-          <RevealItem>
-            <div className="h-full rounded-lg bg-white p-6 ring-1 ring-hairline">
-              <div className="mono-label text-muted">biggest days</div>
-              <ul className="mt-4 divide-y divide-hairline">
-                {YOUTUBE_PEAKS.map((p) => (
-                  <li key={p.when} className="flex gap-4 py-3">
-                    <span className="mono-label w-[72px] shrink-0 pt-0.5 text-muted">
-                      {p.when}
-                    </span>
-                    <span className="text-[14px] leading-[1.45] text-body-muted">
-                      <span className="tabular font-display text-[16px] text-ink">
-                        {compact(p.views)} views
-                      </span>{' '}
-                      in a day. {p.note}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </RevealItem>
-          <RevealItem>
-            <div className="h-full rounded-lg bg-white p-6 ring-1 ring-hairline">
-              <div className="mono-label text-muted">
-                most watched, last 48 hours
-              </div>
-              <ol className="mt-4 space-y-3">
-                {YOUTUBE_NOW.topRightNow.map((t, i) => (
-                  <li key={t} className="flex items-center gap-3">
-                    <span className="mono-label w-6 text-muted">0{i + 1}</span>
-                    <span className="flex h-8 w-12 shrink-0 items-center justify-center rounded-xs bg-pale text-primary">
-                      <PlatformLogo platform="youtube" size={12} />
-                    </span>
-                    <span className="text-[15px] text-ink">{t}</span>
-                  </li>
-                ))}
-              </ol>
-              <p className="mt-4 text-[12px] text-muted">
-                From YouTube Studio on Sep 15, 2026.
-              </p>
-            </div>
-          </RevealItem>
-          <RevealItem>
-            <div className="grain h-full rounded-lg bg-band p-6 text-white">
-              <div className="mono-label text-white/70">in plain words</div>
-              <p className="mt-4 text-[16px] leading-[1.5] text-white/85">
-                The channel started in {YOUTUBE_NOW.since.slice(-4)}. Just over
-                half of everything it has ever done happened in the past year:{' '}
-                {compact(YOUTUBE.year.views.total)} of{' '}
-                {compact(YOUTUBE.total.views.total)} views,{' '}
-                {compact(YOUTUBE.year.hours.total)} of{' '}
-                {compact(YOUTUBE.total.hours.total)} hours watched, and{' '}
-                {compact(YOUTUBE.year.subs.total)} of{' '}
-                {compact(YOUTUBE.total.subs.total)} subscribers. Watch time is
-                up 23% and subscribers up 15% on the year before.
-              </p>
-              <p className="mt-4 text-[13px] text-white/70">
-                Monthly values are read from YouTube Studio’s charts and scaled
-                to the reported totals.
-              </p>
-            </div>
-          </RevealItem>
+        {/* most watched videos */}
+        <Reveal className="mt-12 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <div className="mono-label text-muted">most watched</div>
+            <h3 className="mt-2 font-display text-[clamp(22px,2.6vw,30px)] leading-[1.1] tracking-[-0.02em] text-ink">
+              3 most watched videos in the past year
+            </h3>
+          </div>
+          <span className="mono-label text-[10px] text-muted">
+            from YouTube Studio · Sep 17, 2026
+          </span>
+        </Reveal>
+        <RevealGroup className="mt-5 grid gap-3 md:grid-cols-3" stagger={0.08}>
+          {YOUTUBE_TOP_VIDEOS.map((v, i) => (
+            <RevealItem key={v.id} className="h-full">
+              <VideoCard v={v} rank={i + 1} />
+            </RevealItem>
+          ))}
         </RevealGroup>
       </div>
     </section>
+  )
+}
+
+function VideoCard({ v, rank }: { v: YoutubeVideo; rank: number }) {
+  const [failed, setFailed] = useState(false)
+  return (
+    <SpotlightCard tilt className="h-full ring-1 ring-hairline">
+      <a
+        href={youtubeUrl(v.id)}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`${v.title} — ${compact(v.views)} views on YouTube`}
+        className="group flex h-full flex-col"
+      >
+        <div className="relative aspect-video overflow-hidden bg-pale">
+          {failed ? (
+            <div className="flex h-full w-full items-center justify-center bg-[radial-gradient(ellipse_at_70%_40%,rgba(216,180,254,0.55),transparent_60%),linear-gradient(90deg,#ffffff,#faf5ff)] text-primary/50">
+              <PlatformLogo platform="youtube" size={40} />
+            </div>
+          ) : (
+            <img
+              src={youtubeThumb(v.id)}
+              alt=""
+              loading="lazy"
+              draggable={false}
+              onError={() => setFailed(true)}
+              className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+            />
+          )}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
+          <span className="mono-label absolute top-3 left-3 rounded-xl bg-white/90 px-2 py-1 text-[10px] text-ink ring-1 ring-ink/5 backdrop-blur">
+            0{rank}
+          </span>
+          <span className="tabular absolute right-3 bottom-3 rounded-xs bg-ink/80 px-1.5 py-0.5 text-[11px] text-white">
+            {v.duration}
+          </span>
+          <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-primary shadow-[0_12px_30px_-12px_rgba(30,16,53,0.6)]">
+              <Play size={18} fill="currentColor" strokeWidth={0} className="ml-0.5" />
+            </span>
+          </span>
+        </div>
+        <div className="flex flex-1 flex-col p-5 sm:p-6">
+          <h4 className="font-display text-[18px] leading-[1.25] tracking-tight text-ink">
+            {v.title}
+          </h4>
+          <div className="mt-auto flex items-end justify-between gap-4 pt-5">
+            <div>
+              <div className="font-display text-[30px] leading-none tracking-[-0.03em] text-ink">
+                <Counter value={v.views} decimals={0} />
+              </div>
+              <div className="mt-1 text-[12px] text-slate">views in the past year</div>
+            </div>
+            <span className="inline-flex items-center gap-1.5 text-[13px] text-slate transition-colors group-hover:text-ink">
+              <PlatformLogo platform="youtube" size={12} />
+              Watch
+              <ArrowUpRight
+                size={13}
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </span>
+          </div>
+        </div>
+      </a>
+    </SpotlightCard>
   )
 }

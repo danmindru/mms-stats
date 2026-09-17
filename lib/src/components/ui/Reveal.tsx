@@ -4,12 +4,27 @@ import type { ReactNode } from 'react'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
+/*
+ * Every reveal animates `filter: blur()` in. Motion would otherwise leave
+ * `filter: blur(0px)` on the element for good, and a filter, even a no-op
+ * one, keeps the element on its own offscreen surface that the compositor
+ * has to carry through every scroll frame. `transitionEnd` drops it once the
+ * animation has finished so the page scrolls like it has no filters at all.
+ */
+const settled = { filter: 'none' }
+
 interface RevealProps extends HTMLMotionProps<'div'> {
   children: ReactNode
   delay?: number
   y?: number
   once?: boolean
   amount?: number
+  /**
+   * Blur while fading in. Leave on for text and cards; turn off for very
+   * large wrappers (whole chart panels), where the blur pass over the full
+   * area is the single most expensive thing that happens while scrolling.
+   */
+  blur?: boolean
 }
 
 /** Scroll-triggered fade + rise. Default view margin makes it feel eager. */
@@ -19,12 +34,17 @@ export function Reveal({
   y = 24,
   once = true,
   amount = 0.25,
+  blur = true,
   ...rest
 }: RevealProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={blur ? { opacity: 0, y, filter: 'blur(6px)' } : { opacity: 0, y }}
+      whileInView={
+        blur
+          ? { opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: settled }
+          : { opacity: 1, y: 0 }
+      }
       viewport={{ once, amount, margin: '0px 0px -10% 0px' }}
       transition={{ duration: 0.9, ease: EASE, delay }}
       {...rest}
@@ -83,6 +103,7 @@ export function RevealItem({
           y: 0,
           filter: 'blur(0px)',
           transition: { duration: 0.8, ease: EASE },
+          transitionEnd: settled,
         },
       }}
     >
