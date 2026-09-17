@@ -1,9 +1,9 @@
-# Dan & Sandra — a year of reach
+# Morning Maker Show — yearly stats
 
-A single-page, animated visualisation of impressions over the past 365 days for
+A single-page visualisation of yearly impressions (Sep 2025 – Sep 2026) for
 Dan (`@d4m1n`, X), Sandra (`@TakoTreba`, X + LinkedIn) and the Morning Maker
-Show on YouTube. Combined totals first, then per platform, then per person,
-then the moments that made the spikes.
+Show on YouTube. Every chart is a running total. Combined totals first, then by
+platform, then Dan, Sandra and the show, then the biggest months.
 
 ```bash
 npm install
@@ -25,7 +25,6 @@ is the single source of truth:
   combined figure, and this is stated in the footer.
 - LinkedIn only exposes a 400-day window (Aug 13 2025 → Sep 16 2026); shown as
   reported.
-- Morning Maker Show is a shared channel and is credited 50/50 per person.
 
 Derived aggregates (per platform, per person, cumulative series, moments) are
 computed in the same file so the UI never carries its own numbers.
@@ -48,15 +47,16 @@ src/
   data/stats.ts            numbers + derived aggregates
   lib/format.ts            cn(), compact/full number formatting
   components/
-    brand/                 PlatformLogo (X / YouTube / LinkedIn), Avatar
-    charts/                CumulativeChart, MonthlyBars, ShareRing, ClientChart
+    brand/                 PlatformLogo (X / YouTube / LinkedIn), Avatar, ShowIcon, AccountGlyph
+    charts/                CumulativeChart, Sparkline, ClientChart
     ui/                    Button (magnetic pill), Chip, Counter, Reveal, SpotlightCard
-    sections/              Nav, Hero, Ticker, Totals, Platforms, People, Moments, Cta, Footer
+    sections/              Nav (header), Hero, Ticker, Totals, Platforms, People, Moments, Cta, Footer
   routes/                  __root.tsx (document + meta), index.tsx (page)
-public/avatars/            dan.png, sandra.png
+public/avatars/            dan.png, sandra.png, mms.png
 ```
 
 Design tokens (colours, radii, type scale, easings, keyframes) live in
-`src/styles.css` under `@theme`, following the Cohere-derived system: white
-editorial canvas, deep-green dark band, soft stone surfaces, 8/22px radii, pill
-CTAs, tight display type with uppercase mono labels, coral and blue accents.
+`src/styles.css` under `@theme`. The palette is built around the show's indigo
+(`#2b2187`): white canvas, indigo dark bands, warm stone surfaces, 8/22px radii,
+pill buttons, tight display type with uppercase mono labels, one warm sand
+accent.
