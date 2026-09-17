@@ -26,7 +26,7 @@ interface Props {
 export function SpotlightCard({
   children,
   className,
-  glow = 'rgba(43, 33, 135, 0.14)',
+  glow = 'rgba(126, 34, 206, 0.12)',
   tilt = false,
   dark = false,
 }: Props) {
@@ -39,7 +39,7 @@ export function SpotlightCard({
 
   const background = useMotionTemplate`radial-gradient(420px circle at ${mx}px ${my}px, ${glow}, transparent 65%)`
   const border = useMotionTemplate`radial-gradient(260px circle at ${mx}px ${my}px, ${
-    dark ? 'rgba(255,255,255,0.55)' : 'rgba(43,33,135,0.35)'
+    dark ? 'rgba(255,255,255,0.55)' : 'rgba(126,34,206,0.35)'
   }, transparent 70%)`
 
   const onMove = (e: MouseEvent<HTMLDivElement>) => {

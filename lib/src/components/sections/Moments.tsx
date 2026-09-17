@@ -166,8 +166,8 @@ export function Moments() {
                             background: active
                               ? '#e5a56e'
                               : hot
-                                ? '#2b2187'
-                                : 'rgba(43,33,135,0.45)',
+                                ? '#7e22ce'
+                                : 'rgba(126,34,206,0.45)',
                           }}
                           initial={{ width: 0 }}
                           whileInView={{

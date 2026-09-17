@@ -66,7 +66,7 @@ export function Sparkline({
           <YAxis hide domain={[0, 'dataMax']} />
           <Tooltip
             cursor={{
-              stroke: dark ? 'rgba(255,255,255,0.35)' : 'rgba(23,21,46,0.3)',
+              stroke: dark ? 'rgba(255,255,255,0.35)' : 'rgba(30,16,53,0.3)',
               strokeDasharray: '3 4',
             }}
             isAnimationActive={false}
@@ -100,7 +100,7 @@ export function Sparkline({
             activeDot={{
               r: 4,
               strokeWidth: 2,
-              stroke: dark ? '#2b2187' : '#fff',
+              stroke: dark ? '#581c87' : '#fff',
               fill: color,
             }}
             isAnimationActive

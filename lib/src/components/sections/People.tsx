@@ -92,7 +92,7 @@ const CARDS: { id: AccountId; note: string; stats: Stat[] }[] = [
 export function People() {
   return (
     <section className="px-3 py-6 sm:px-5">
-      <div className="grain relative overflow-hidden rounded-lg bg-primary text-white">
+      <div className="grain relative overflow-hidden rounded-lg bg-band text-white">
         <div
           className="blueprint-dark pointer-events-none absolute inset-0 opacity-60"
           aria-hidden
@@ -100,14 +100,14 @@ export function People() {
         <div className="relative z-[2] mx-auto max-w-[1400px] px-5 py-16 sm:px-10 sm:py-24">
           <Reveal className="grid gap-8 lg:grid-cols-[1fr_1.3fr] lg:items-end">
             <div>
-              <div className="mono-label text-white/50">03 — who</div>
+              <div className="mono-label text-white/70">03 — who</div>
               <div className="mt-5">
                 <TeamAvatars size={56} />
               </div>
               <h2 className="mt-5 font-display text-[clamp(32px,4.5vw,52px)] leading-[1] tracking-[-0.02em]">
                 {PEOPLE.dan.name}, {PEOPLE.sandra.name} and the show
               </h2>
-              <p className="mt-5 max-w-[48ch] text-[17px] leading-[1.45] text-white/70">
+              <p className="mt-5 max-w-[48ch] text-[17px] leading-[1.45] text-white/85">
                 One team. Dan and Sandra make the {SHOW.name} together and each
                 post on their own accounts. The four accounts add up to one
                 yearly total, shown here by account. Each account has its own
@@ -115,10 +115,10 @@ export function People() {
               </p>
             </div>
 
-            <div className="rounded-lg bg-white/[0.06] p-5 ring-1 ring-white/10 sm:p-6">
+            <div className="rounded-lg bg-white/[0.08] p-5 ring-1 ring-white/15 sm:p-6">
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
-                  <div className="mono-label text-white/50">
+                  <div className="mono-label text-white/70">
                     yearly total · all four accounts
                   </div>
                   <div className="mt-1 font-display text-[clamp(36px,4vw,52px)] leading-none tracking-[-0.04em]">
@@ -129,7 +129,7 @@ export function People() {
                   {CARDS.map((c) => (
                     <li
                       key={c.id}
-                      className="flex items-center gap-1.5 text-[12px] text-white/70"
+                      className="flex items-center gap-1.5 text-[12px] text-white/85"
                     >
                       <span
                         className="h-2 w-2 rounded-full"
@@ -191,7 +191,7 @@ function AccountCard({
     <motion.article
       whileHover={{ y: -3 }}
       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-      className="flex h-full flex-col rounded-lg bg-white/[0.06] p-5 ring-1 ring-white/10 backdrop-blur-sm sm:p-6"
+      className="flex h-full flex-col rounded-lg bg-white/[0.08] p-5 ring-1 ring-white/15 backdrop-blur-sm sm:p-6"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -204,7 +204,7 @@ function AccountCard({
               href={a.url}
               target="_blank"
               rel="noreferrer"
-              className="group mt-0.5 inline-flex items-center gap-1 text-[12px] text-white/55 hover:text-white"
+              className="group mt-0.5 inline-flex items-center gap-1 text-[12px] text-white/75 hover:text-white"
             >
               {a.handle}
               <ArrowUpRight
@@ -223,17 +223,17 @@ function AccountCard({
         </span>
       </div>
 
-      <p className="mt-4 text-[14px] leading-[1.5] text-white/65">{note}</p>
+      <p className="mt-4 text-[14px] leading-[1.5] text-white/80">{note}</p>
 
       <div className="mt-5">
-        <div className="mono-label text-white/50">yearly {unit}</div>
+        <div className="mono-label text-white/70">yearly {unit}</div>
         <div className="mt-1.5 font-display text-[40px] leading-none tracking-[-0.035em]">
           <Counter value={a.total} />
         </div>
       </div>
 
       <div className="mt-4">
-        <div className="mono-label mb-1 text-white/50">running total</div>
+        <div className="mono-label mb-1 text-white/70">running total</div>
         <ClientChart height={84} dark>
           <Sparkline
             id={id}
@@ -245,10 +245,10 @@ function AccountCard({
         </ClientChart>
       </div>
 
-      <dl className="mt-auto grid grid-cols-2 gap-x-4 gap-y-3 border-t border-white/10 pt-4">
+      <dl className="mt-auto grid grid-cols-2 gap-x-4 gap-y-3 border-t border-white/15 pt-4">
         {stats.map((m) => (
           <div key={m.label}>
-            <dt className="text-[11px] leading-tight text-white/50">
+            <dt className="text-[11px] leading-tight text-white/70">
               {m.label}
             </dt>
             <dd className="tabular mt-0.5 font-display text-[18px] leading-none tracking-tight">

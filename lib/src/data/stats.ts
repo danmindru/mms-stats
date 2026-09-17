@@ -44,7 +44,7 @@ export const SHOW = {
   name: 'Morning Maker Show',
   icon: '/avatars/mms.png',
   url: 'https://www.youtube.com/@MorningMakerShow',
-  color: '#2b2187',
+  color: '#7e22ce',
 }
 
 export interface Person {
@@ -77,7 +77,7 @@ export interface Platform {
 }
 
 export const PLATFORMS: Record<PlatformId, Platform> = {
-  x: { id: 'x', name: 'X', metricLabel: 'impressions', onLight: '#17152e' },
+  x: { id: 'x', name: 'X', metricLabel: 'impressions', onLight: '#1e1035' },
   youtube: {
     id: 'youtube',
     name: 'YouTube',

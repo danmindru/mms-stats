@@ -239,7 +239,7 @@ function MonthStrip({ active }: { active: number | null }) {
             animate={{
               height: 4 + (v / max) * 30,
               backgroundColor:
-                active === i ? 'rgba(43,33,135,1)' : 'rgba(43,33,135,0.18)',
+                active === i ? 'rgba(126,34,206,1)' : 'rgba(126,34,206,0.18)',
             }}
             transition={{ type: 'spring', stiffness: 220, damping: 22 }}
           />
