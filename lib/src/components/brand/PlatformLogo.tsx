@@ -55,7 +55,7 @@ export function PlatformBadge({
 }) {
   const bg =
     platform === 'x'
-      ? 'bg-primary text-white'
+      ? 'bg-brand-x text-white'
       : platform === 'youtube'
         ? 'bg-brand-youtube text-white'
         : 'bg-brand-linkedin text-white'

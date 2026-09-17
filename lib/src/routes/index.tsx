@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { AnnouncementBar, Nav } from '#/components/sections/Nav'
+import { Header } from '#/components/sections/Nav'
 import { Hero } from '#/components/sections/Hero'
 import { Ticker } from '#/components/sections/Ticker'
 import { Totals } from '#/components/sections/Totals'
@@ -14,8 +14,7 @@ export const Route = createFileRoute('/')({ component: Home })
 function Home() {
   return (
     <>
-      <AnnouncementBar />
-      <Nav />
+      <Header />
       <main>
         <Hero />
         <Ticker />

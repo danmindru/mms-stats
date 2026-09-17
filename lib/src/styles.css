@@ -4,31 +4,32 @@
 @import '@fontsource-variable/jetbrains-mono';
 
 @theme {
-  /* Cohere-derived palette */
-  --color-primary: #17171c;
-  --color-black: #000000;
-  --color-ink: #212121;
-  --color-deep-green: #003c33;
-  --color-deep-green-2: #00281f;
-  --color-dark-navy: #071829;
+  /*
+   * Palette built around the Morning Maker Show indigo (#2b2187).
+   * Structure follows the Cohere system: white canvas, one dark band colour,
+   * a warm neutral surface, hairline rules, and a single warm accent.
+   */
+  --color-primary: #2b2187;
+  --color-primary-deep: #1c1563;
+  --color-primary-soft: #5b4fd1;
+  --color-lavender: #b7b0ee;
+  --color-pale-indigo: #efedfb;
+  --color-black: #0f0d24;
+  --color-ink: #17152e;
   --color-canvas: #ffffff;
-  --color-stone: #eeece7;
-  --color-stone-2: #e6e3dc;
-  --color-pale-green: #edfce9;
-  --color-pale-blue: #f1f5ff;
-  --color-hairline: #d9d9dd;
-  --color-border-light: #e5e7eb;
-  --color-card-border: #f2f2f2;
-  --color-muted: #93939f;
-  --color-slate: #75758a;
-  --color-body-muted: #616161;
-  --color-action: #1863dc;
-  --color-focus: #4c6ee6;
-  --color-coral: #ff7759;
-  --color-coral-soft: #ffad9b;
-  --color-violet: #9b60aa;
+  --color-stone: #f1efea;
+  --color-stone-2: #e7e4dd;
+  --color-pale-sand: #fbf3ea;
+  --color-hairline: #dcdae6;
+  --color-border-light: #e6e5ee;
+  --color-card-border: #f3f2f8;
+  --color-muted: #8f8ca3;
+  --color-slate: #6f6c86;
+  --color-body-muted: #5c5a70;
+  --color-focus: #5b4fd1;
+  --color-sand: #e5a56e;
+  --color-sand-soft: #f2cfae;
   --color-error: #b30000;
-  --color-mint: #7ee2b8;
 
   /* Brand */
   --color-brand-x: #17171c;
@@ -61,7 +62,6 @@
   --animate-shimmer: shimmer 2.8s linear infinite;
   --animate-float: float 7s ease-in-out infinite;
   --animate-spin-slow: spin 28s linear infinite;
-  --animate-orbit: orbit 18s linear infinite;
 
   @keyframes pulse-dot {
     0%,
@@ -94,11 +94,6 @@
       transform: translateY(-8px);
     }
   }
-  @keyframes orbit {
-    to {
-      transform: rotate(360deg);
-    }
-  }
 }
 
 @layer base {
@@ -129,8 +124,8 @@
   }
 
   ::selection {
-    background: var(--color-coral);
-    color: var(--color-primary);
+    background: var(--color-lavender);
+    color: var(--color-ink);
   }
 
   :focus-visible {
@@ -192,8 +187,8 @@
 /* Faint blueprint grid for the hero canvas. */
 @utility blueprint {
   background-image:
-    linear-gradient(to right, rgba(23, 23, 28, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(23, 23, 28, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(43, 33, 135, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(43, 33, 135, 0.06) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(
     ellipse 80% 70% at 50% 0%,

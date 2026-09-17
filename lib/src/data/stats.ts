@@ -1,7 +1,7 @@
 /**
  * Source of truth for the viz. Every number here is read from the native
  * analytics exports in /stats (X Analytics, YouTube Studio, LinkedIn Content
- * analytics). Reporting window: Sep 16 2025 -> Sep 15 2026 (365 days), except
+ * analytics). Yearly window: Sep 16 2025 -> Sep 15 2026 (365 days), except
  * LinkedIn which only exposes a 400 day window (Aug 13 2025 -> Sep 16 2026).
  *
  * Monthly values are read off the bar/line charts in the screenshots and then
@@ -36,13 +36,20 @@ export const MONTH_LABELS = MONTHS.map((m, i) =>
 export const WINDOW = {
   start: 'Sep 16, 2025',
   end: 'Sep 15, 2026',
+  short: 'Sep 2025 – Sep 2026',
   days: 365,
+}
+
+export const SHOW = {
+  name: 'Morning Maker Show',
+  icon: '/avatars/mms.png',
+  url: 'https://www.youtube.com/@MorningMakerShow',
+  color: '#2b2187',
 }
 
 export interface Person {
   id: PersonId
   name: string
-  fullName: string
   avatar: string
   role: string
   accent: string
@@ -52,18 +59,16 @@ export const PEOPLE: Record<PersonId, Person> = {
   dan: {
     id: 'dan',
     name: 'Dan',
-    fullName: 'Dan',
     avatar: '/avatars/dan.png',
-    role: 'Builder · Host',
-    accent: '#1863dc',
+    role: 'Co-host',
+    accent: '#2b2187',
   },
   sandra: {
     id: 'sandra',
     name: 'Sandra',
-    fullName: 'Sandra',
     avatar: '/avatars/sandra.png',
-    role: 'Creator · Host',
-    accent: '#ff7759',
+    role: 'Co-host',
+    accent: '#5b4fd1',
   },
 }
 
@@ -71,30 +76,21 @@ export interface Platform {
   id: PlatformId
   name: string
   metricLabel: string
-  brand: string
   onLight: string
 }
 
 export const PLATFORMS: Record<PlatformId, Platform> = {
-  x: {
-    id: 'x',
-    name: 'X',
-    metricLabel: 'impressions',
-    brand: '#17171c',
-    onLight: '#17171c',
-  },
+  x: { id: 'x', name: 'X', metricLabel: 'impressions', onLight: '#17171c' },
   youtube: {
     id: 'youtube',
     name: 'YouTube',
     metricLabel: 'views',
-    brand: '#ff0000',
     onLight: '#e11d1d',
   },
   linkedin: {
     id: 'linkedin',
     name: 'LinkedIn',
     metricLabel: 'impressions',
-    brand: '#0a66c2',
     onLight: '#0a66c2',
   },
 }
@@ -110,17 +106,18 @@ export interface Metric {
 export interface Account {
   id: AccountId
   handle: string
+  label: string
   url: string
   platform: PlatformId
   people: PersonId[]
-  /** Reported impressions/views over the window. */
+  /** Reported impressions/views over the yearly window. */
   total: number
   /** Monthly impressions, Sep '25 -> Sep '26 (13 buckets, both Septembers partial). */
   monthly: number[]
   windowNote?: string
   followers?: { label: string; value: number }
   metrics: Metric[]
-  peak: { month: string; value: number; note: string }
+  peak: { month: string; monthIndex: number; value: number; note: string }
 }
 
 const scaleTo = (values: number[], total: number) => {
@@ -132,6 +129,7 @@ export const ACCOUNTS: Record<AccountId, Account> = {
   'dan-x': {
     id: 'dan-x',
     handle: '@d4m1n',
+    label: 'Dan on X',
     url: 'https://x.com/d4m1n',
     platform: 'x',
     people: ['dan'],
@@ -151,17 +149,19 @@ export const ACCOUNTS: Record<AccountId, Account> = {
       { label: 'Replies', value: 20_200 },
       { label: 'Reposts', value: 6_300 },
       { label: 'Shares', value: 6_400 },
-      { label: 'Active followers', value: 22_200, hint: 'of 32.2K' },
+      { label: 'Followers', value: 32_200 },
     ],
     peak: {
       month: 'Jan 2026',
+      monthIndex: 4,
       value: 4_800_000,
-      note: 'Shipping in public. 4.8M impressions in a single month.',
+      note: 'Best month on this account: 4.8M impressions.',
     },
   },
   'sandra-x': {
     id: 'sandra-x',
     handle: '@TakoTreba',
+    label: 'Sandra on X',
     url: 'https://x.com/TakoTreba',
     platform: 'x',
     people: ['sandra'],
@@ -181,18 +181,20 @@ export const ACCOUNTS: Record<AccountId, Account> = {
       { label: 'Replies', value: 12_600 },
       { label: 'Reposts', value: 10_800 },
       { label: 'Shares', value: 4_400 },
-      { label: 'Active followers', value: 15_900, hint: 'of 22.8K' },
+      { label: 'Followers', value: 22_800 },
     ],
     peak: {
       month: 'Oct 2025',
+      monthIndex: 1,
       value: 37_200_000,
-      note: 'One month. Thirty-seven million impressions. No ad spend.',
+      note: 'Best month on this account: 37.2M impressions.',
     },
   },
   'mms-youtube': {
     id: 'mms-youtube',
     handle: 'Morning Maker Show',
-    url: 'https://www.youtube.com/@MorningMakerShow',
+    label: 'Morning Maker Show on YouTube',
+    url: SHOW.url,
     platform: 'youtube',
     people: ['dan', 'sandra'],
     total: 221_414,
@@ -205,19 +207,22 @@ export const ACCOUNTS: Record<AccountId, Account> = {
       { label: 'Views', value: 221_414 },
       { label: 'Watch time', value: 10_200, format: 'hours', delta: 23 },
       { label: 'New subscribers', value: 5_600, delta: 15 },
+      { label: 'Subscribers', value: 11_065 },
       { label: 'Est. revenue', value: 921.62, format: 'currency' },
       { label: 'All-time views', value: 411_513 },
       { label: 'All-time watch time', value: 20_200, format: 'hours' },
     ],
     peak: {
       month: 'Nov 2025',
+      monthIndex: 2,
       value: 45_000,
-      note: 'A single episode pushed the channel to 12K views a day.',
+      note: 'Best month on the channel: about 45K views, peaking at 12K a day.',
     },
   },
   'sandra-linkedin': {
     id: 'sandra-linkedin',
     handle: 'Sandra on LinkedIn',
+    label: 'Sandra on LinkedIn',
     url: 'https://www.linkedin.com/',
     platform: 'linkedin',
     people: ['sandra'],
@@ -239,8 +244,9 @@ export const ACCOUNTS: Record<AccountId, Account> = {
     ],
     peak: {
       month: 'Oct 2025',
+      monthIndex: 1,
       value: 184_000,
-      note: '"Elon Musk just quoted me." 184K impressions from one post.',
+      note: 'Best single post: 184K impressions and 806 engagements.',
     },
   },
 }
@@ -278,47 +284,36 @@ export const PLATFORM_MONTHLY: Record<PlatformId, number[]> = {
   linkedin: ACCOUNTS['sandra-linkedin'].monthly,
 }
 
-/** YouTube is a shared channel; each host is credited half. */
-export const PERSON_MONTHLY: Record<PersonId, number[]> = {
-  dan: addSeries([
-    ACCOUNTS['dan-x'].monthly,
-    ACCOUNTS['mms-youtube'].monthly.map((v) => v / 2),
-  ]),
-  sandra: addSeries([
-    ACCOUNTS['sandra-x'].monthly,
-    ACCOUNTS['sandra-linkedin'].monthly,
-    ACCOUNTS['mms-youtube'].monthly.map((v) => v / 2),
-  ]),
-}
-
-export const PERSON_TOTALS: Record<PersonId, number> = {
-  dan: sum(PERSON_MONTHLY.dan),
-  sandra: sum(PERSON_MONTHLY.sandra),
-}
-
 export const COMBINED_MONTHLY = addSeries(ACCOUNT_LIST.map((a) => a.monthly))
 export const COMBINED_CUMULATIVE = cumulative(COMBINED_MONTHLY)
 
 export const TOTAL_ENGAGEMENTS =
-  272_400 + // Dan X
-  249_300 + // Sandra X
-  34_336 + // Sandra LinkedIn
-  1_393 // LinkedIn link engagements
+  metric('dan-x', 'Engagements') +
+  metric('sandra-x', 'Engagements') +
+  metric('sandra-linkedin', 'Social engagements') +
+  metric('sandra-linkedin', 'Link engagements')
 
-export const TOTAL_AUDIENCE = 32_200 + 22_800 + 11_065
+export const TOTAL_AUDIENCE =
+  metric('dan-x', 'Followers') +
+  metric('sandra-x', 'Followers') +
+  metric('mms-youtube', 'Subscribers')
 
-export const TOTAL_WATCH_HOURS = 10_200
+export const TOTAL_WATCH_HOURS = metric('mms-youtube', 'Watch time')
 
 export const PEAK_MONTH_INDEX = COMBINED_MONTHLY.indexOf(
   Math.max(...COMBINED_MONTHLY),
 )
 
-/** Average impressions per day over the window. */
+/** Average impressions per day over the yearly window. */
 export const PER_DAY = Math.round(TOTAL_IMPRESSIONS / WINDOW.days)
-export const PER_HOUR = Math.round(PER_DAY / 24)
-export const PER_MINUTE = Math.round(PER_HOUR / 60)
 
-/** Headline story beats shown in the "moments" list. */
+/** Month in which the running total first passed each threshold. */
+export const MILESTONES = [10_000_000, 25_000_000, 50_000_000].map((t) => ({
+  threshold: t,
+  monthIndex: COMBINED_CUMULATIVE.findIndex((v) => v >= t),
+}))
+
+/** Notable months, listed plainly. */
 export interface Moment {
   when: string
   monthIndex: number
@@ -333,54 +328,53 @@ export const MOMENTS: Moment[] = [
     when: 'Oct 2025',
     monthIndex: 1,
     account: 'sandra-x',
-    title: 'The 37M month',
+    title: '37.2M impressions on X in one month',
     value: 37_200_000,
     detail:
-      'Sandra’s X account did more impressions in October than most brands do in a decade. Organic. Zero spend.',
+      'Sandra’s biggest month on X. Several posts went viral in the same weeks. All organic; no paid promotion.',
   },
   {
     when: 'Oct 2025',
     monthIndex: 1,
     account: 'sandra-linkedin',
-    title: 'Quoted by Elon',
+    title: 'Top LinkedIn post: 184K impressions',
     value: 184_000,
     detail:
-      '“Elon Musk just quoted me. Didn’t happen overnight. I post daily.” 184K impressions, 806 engagements from one post.',
+      'A post about being quoted by Elon Musk. 184K impressions and 806 engagements from one post.',
   },
   {
     when: 'Nov 2025',
     monthIndex: 2,
     account: 'mms-youtube',
-    title: 'The 12K-a-day episode',
+    title: 'Best month on YouTube: about 45K views',
     value: 45_000,
     detail:
-      'One Morning Maker Show episode broke out of the feed and pulled 12,000 views a day at peak.',
+      'One episode reached 12,000 views a day at its peak. Watch time for the year is up 23% on the year before.',
   },
   {
     when: 'Jan 2026',
     monthIndex: 4,
     account: 'dan-x',
-    title: 'Dan’s 4.8M January',
+    title: '4.8M impressions on X in one month',
     value: 4_800_000,
     detail:
-      'Build-in-public threads, shipped tools, and demos. Dan’s best month on X by a wide margin.',
+      'Dan’s biggest month on X, from posts about the tools and demos he was building.',
   },
   {
     when: 'Feb 2026',
     monthIndex: 5,
     account: 'mms-youtube',
-    title: 'The second wave',
+    title: 'Second-best month on YouTube: about 40K views',
     value: 40_000,
     detail:
-      'A sustained plateau rather than a spike: a month of steady 1–5K daily views across the back catalogue.',
+      'No single spike this time. Steady daily views across older episodes for the whole month.',
   },
   {
     when: 'Apr 2026',
     monthIndex: 7,
     account: 'dan-x',
-    title: 'Dan’s 3.6M April',
+    title: '3.6M impressions on X in one month',
     value: 3_600_000,
-    detail:
-      'Second-biggest month of the year: consistency compounding, not a one-off viral moment.',
+    detail: 'Dan’s second-biggest month on X.',
   },
 ]

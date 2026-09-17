@@ -7,10 +7,10 @@ import { cn } from '#/lib/format'
 type Variant = 'primary' | 'inverted' | 'outline' | 'ghost'
 
 const VARIANTS: Record<Variant, string> = {
-  primary: 'bg-primary text-white hover:bg-black',
-  inverted: 'bg-white text-primary hover:bg-stone',
+  primary: 'bg-primary text-white hover:bg-primary-deep',
+  inverted: 'bg-white text-ink hover:bg-stone',
   outline:
-    'bg-transparent text-primary ring-1 ring-primary/80 hover:bg-primary hover:text-white',
+    'bg-transparent text-ink ring-1 ring-ink/70 hover:bg-primary hover:ring-primary hover:text-white',
   ghost: 'bg-transparent text-ink underline-offset-4 hover:underline px-0',
 }
 
@@ -84,20 +84,20 @@ export function Chip({
   active?: boolean
   className?: string
   onClick?: () => void
-  tone?: 'dark' | 'light' | 'coral'
+  tone?: 'dark' | 'light' | 'sand'
 }) {
   const base =
     tone === 'light'
       ? active
-        ? 'bg-white text-primary ring-white'
+        ? 'bg-white text-ink ring-white'
         : 'text-white/80 ring-white/30 hover:ring-white/60 hover:text-white'
-      : tone === 'coral'
+      : tone === 'sand'
         ? active
-          ? 'bg-coral text-primary ring-coral'
-          : 'text-coral ring-coral-soft hover:bg-coral/10'
+          ? 'bg-sand text-ink ring-sand'
+          : 'text-sand ring-sand-soft hover:bg-sand/10'
         : active
           ? 'bg-primary text-white ring-primary'
-          : 'text-primary ring-hairline hover:ring-primary'
+          : 'text-ink ring-hairline hover:ring-primary'
 
   return (
     <button

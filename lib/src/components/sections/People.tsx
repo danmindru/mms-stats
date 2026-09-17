@@ -1,134 +1,145 @@
 import { motion } from 'motion/react'
-import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { Avatar } from '#/components/brand/Avatar'
+import { AccountGlyph, Avatar, ShowIcon } from '#/components/brand/Avatar'
 import { PlatformLogo } from '#/components/brand/PlatformLogo'
 import { ClientChart } from '#/components/charts/ClientChart'
-import { MonthlyBars } from '#/components/charts/MonthlyBars'
-import { ShareRing } from '#/components/charts/ShareRing'
+import { Sparkline } from '#/components/charts/Sparkline'
 import { Counter } from '#/components/ui/Counter'
 import { Reveal, RevealGroup, RevealItem } from '#/components/ui/Reveal'
-import {
-  ACCOUNTS,
-  ACCOUNT_LIST,
-  PEOPLE,
-  PERSON_MONTHLY,
-  PERSON_TOTALS,
-  TOTAL_IMPRESSIONS,
-  metric,
-} from '#/data/stats'
-import type { PersonId } from '#/data/stats'
-import { cn, compact, formatMetric, share } from '#/lib/format'
+import { ACCOUNTS, PEOPLE, SHOW, addSeries, metric } from '#/data/stats'
+import type { AccountId } from '#/data/stats'
+import { compact, formatMetric } from '#/lib/format'
 
-const PERSON_METRICS: Record<
-  PersonId,
-  { label: string; value: number; format?: 'compact' | 'percent' | 'hours' }[]
-> = {
-  dan: [
-    { label: 'X impressions', value: ACCOUNTS['dan-x'].total },
-    { label: 'X engagements', value: metric('dan-x', 'Engagements') },
-    { label: 'X followers', value: 32_200 },
-    { label: 'Engagement rate', value: 1.3, format: 'percent' },
-    { label: 'Best month (Jan)', value: ACCOUNTS['dan-x'].peak.value },
-    { label: 'Show watch time', value: 10_200, format: 'hours' },
-  ],
-  sandra: [
-    { label: 'X impressions', value: ACCOUNTS['sandra-x'].total },
-    { label: 'LinkedIn impressions', value: ACCOUNTS['sandra-linkedin'].total },
-    { label: 'X followers', value: 22_800 },
-    {
-      label: 'LinkedIn engagements',
-      value: metric('sandra-linkedin', 'Social engagements'),
-    },
-    { label: 'Best month (Oct)', value: ACCOUNTS['sandra-x'].peak.value },
-    { label: 'Show watch time', value: 10_200, format: 'hours' },
-  ],
+interface Card {
+  key: string
+  title: string
+  subtitle: string
+  glyph: React.ReactNode
+  accounts: AccountId[]
+  stats: {
+    label: string
+    value: number
+    format?: 'compact' | 'percent' | 'hours'
+  }[]
+  color: string
 }
 
-const BLURBS: Record<PersonId, string> = {
-  dan: 'Ships tools and demos in public, then talks about how they were built. Technical audience, high intent, sticky.',
-  sandra:
-    'Writes daily about work, craft and the internet. Reaches a broad audience on X and the professional one on LinkedIn.',
-}
+const CARDS: Card[] = [
+  {
+    key: 'dan',
+    title: PEOPLE.dan.name,
+    subtitle:
+      'Co-hosts the show. Posts on X about the tools and demos he builds.',
+    glyph: <Avatar person="dan" size={64} ring={false} />,
+    accounts: ['dan-x'],
+    stats: [
+      { label: 'X impressions', value: ACCOUNTS['dan-x'].total },
+      { label: 'X engagements', value: metric('dan-x', 'Engagements') },
+      { label: 'X followers', value: metric('dan-x', 'Followers') },
+      { label: 'Likes', value: metric('dan-x', 'Likes') },
+      { label: 'Bookmarks', value: metric('dan-x', 'Bookmarks') },
+      {
+        label: 'Engagement rate',
+        value: metric('dan-x', 'Engagement rate'),
+        format: 'percent',
+      },
+    ],
+    color: '#f4f4f6',
+  },
+  {
+    key: 'sandra',
+    title: PEOPLE.sandra.name,
+    subtitle:
+      'Co-hosts the show. Posts daily on X and LinkedIn about work and the internet.',
+    glyph: <Avatar person="sandra" size={64} ring={false} />,
+    accounts: ['sandra-x', 'sandra-linkedin'],
+    stats: [
+      { label: 'X impressions', value: ACCOUNTS['sandra-x'].total },
+      {
+        label: 'LinkedIn impressions',
+        value: ACCOUNTS['sandra-linkedin'].total,
+      },
+      { label: 'X followers', value: metric('sandra-x', 'Followers') },
+      { label: 'X engagements', value: metric('sandra-x', 'Engagements') },
+      {
+        label: 'LinkedIn engagements',
+        value: metric('sandra-linkedin', 'Social engagements'),
+      },
+      { label: 'Likes on X', value: metric('sandra-x', 'Likes') },
+    ],
+    color: '#c4bdff',
+  },
+  {
+    key: 'show',
+    title: SHOW.name,
+    subtitle:
+      'The YouTube channel. Dan and Sandra host every episode together.',
+    glyph: <ShowIcon size={64} ring={false} />,
+    accounts: ['mms-youtube'],
+    stats: [
+      { label: 'Views', value: ACCOUNTS['mms-youtube'].total },
+      {
+        label: 'Hours watched',
+        value: metric('mms-youtube', 'Watch time'),
+        format: 'hours',
+      },
+      {
+        label: 'New subscribers',
+        value: metric('mms-youtube', 'New subscribers'),
+      },
+      { label: 'Subscribers', value: metric('mms-youtube', 'Subscribers') },
+      {
+        label: 'All-time views',
+        value: metric('mms-youtube', 'All-time views'),
+      },
+      {
+        label: 'All-time hours',
+        value: metric('mms-youtube', 'All-time watch time'),
+        format: 'hours',
+      },
+    ],
+    color: '#ff7b7b',
+  },
+]
 
 export function People() {
-  const [focus, setFocus] = useState<PersonId | null>(null)
-  const danPct = share(PERSON_TOTALS.dan, TOTAL_IMPRESSIONS)
-  const sandraPct = share(PERSON_TOTALS.sandra, TOTAL_IMPRESSIONS)
-
   return (
-    <section id="people" className="scroll-mt-24 px-3 py-6 sm:px-5">
-      <div className="grain relative overflow-hidden rounded-lg bg-deep-green text-white">
+    <section id="people" className="px-3 py-6 sm:px-5">
+      <div className="grain relative overflow-hidden rounded-lg bg-primary text-white">
         <div
           className="blueprint-dark pointer-events-none absolute inset-0 opacity-60"
           aria-hidden
         />
-        <div className="relative z-[2] mx-auto max-w-[1400px] px-5 py-20 sm:px-10 sm:py-28">
-          <Reveal className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-end">
+        <div className="relative z-[2] mx-auto max-w-[1400px] px-5 py-16 sm:px-10 sm:py-24">
+          <Reveal className="grid gap-6 lg:grid-cols-[1fr_1.2fr] lg:items-end">
             <div>
-              <div className="mono-label text-white/50">03 — per person</div>
-              <h2 className="mt-4 font-display text-[clamp(36px,5vw,60px)] leading-[1] tracking-[-0.02em] text-balance">
-                Two very different engines.
+              <div className="mono-label text-white/50">03 — who</div>
+              <h2 className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] leading-[1] tracking-[-0.02em]">
+                Dan, Sandra and the show
               </h2>
             </div>
-            <p className="max-w-[560px] text-[18px] leading-[1.4] text-white/70 text-pretty lg:justify-self-end">
-              Sandra brings the reach. Dan brings the depth. Together they cover
-              the whole funnel, from a viral thread to a forty-minute build
-              session. YouTube is a shared channel and is credited half to each.
+            <p className="max-w-[560px] text-[17px] leading-[1.45] text-white/70 lg:justify-self-end">
+              One team, four accounts. Dan and Sandra make the show together and
+              each post on their own accounts. Yearly stats for each are below.
             </p>
           </Reveal>
 
-          <div className="mt-16 grid gap-6 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
-            <PersonPanel person="dan" focused={focus} onFocus={setFocus} />
-
-            <Reveal
-              className="flex items-center justify-center py-4 lg:py-0"
-              delay={0.15}
-            >
-              <ShareRing
-                size={230}
-                stroke={16}
-                track="rgba(255,255,255,0.08)"
-                segments={[
-                  {
-                    key: 'sandra',
-                    value: PERSON_TOTALS.sandra,
-                    color:
-                      focus === 'dan' ? 'rgba(255,173,155,0.3)' : '#ffad9b',
-                  },
-                  {
-                    key: 'dan',
-                    value: PERSON_TOTALS.dan,
-                    color:
-                      focus === 'sandra' ? 'rgba(121,176,255,0.3)' : '#79b0ff',
-                  },
-                ]}
-                center={
-                  <div className="flex flex-col items-center">
-                    <span className="mono-label text-white/50">split</span>
-                    <span className="font-display text-[34px] leading-none tracking-tight">
-                      {focus === 'dan'
-                        ? `${danPct}%`
-                        : focus === 'sandra'
-                          ? `${sandraPct}%`
-                          : `${sandraPct} / ${danPct}`}
-                    </span>
-                    <span className="mt-1 text-[12px] text-white/60">
-                      {focus ? PEOPLE[focus].name : 'Sandra / Dan'}
-                    </span>
-                  </div>
-                }
-              />
-            </Reveal>
-
-            <PersonPanel person="sandra" focused={focus} onFocus={setFocus} />
-          </div>
+          <RevealGroup
+            className="mt-12 grid gap-4 lg:grid-cols-3"
+            stagger={0.1}
+          >
+            {CARDS.map((c) => (
+              <RevealItem key={c.key} className="h-full">
+                <PersonCard card={c} />
+              </RevealItem>
+            ))}
+          </RevealGroup>
 
           <RevealGroup
-            className="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-4"
+            className="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-4"
             stagger={0.06}
           >
-            {ACCOUNT_LIST.map((a) => (
+            {Object.values(ACCOUNTS).map((a) => (
               <RevealItem key={a.id}>
                 <a
                   href={a.url}
@@ -137,23 +148,12 @@ export function People() {
                   className="group flex items-center justify-between gap-3 rounded-md bg-white/5 p-4 ring-1 ring-white/10 transition-colors hover:bg-white/10"
                 >
                   <span className="flex items-center gap-3">
-                    <span className="flex items-center">
-                      {a.people.map((p, i) => (
-                        <Avatar
-                          key={p}
-                          person={p}
-                          size={28}
-                          badge={
-                            i === a.people.length - 1 ? a.platform : undefined
-                          }
-                          className={i > 0 ? '-ml-2' : ''}
-                        />
-                      ))}
-                    </span>
+                    <AccountGlyph account={a.id} size={30} />
                     <span className="flex flex-col leading-tight">
-                      <span className="text-[14px]">{a.handle}</span>
+                      <span className="text-[14px]">{a.label}</span>
                       <span className="mono-label text-[10px] text-white/50">
-                        {a.platform === 'youtube' ? 'views' : 'impressions'}
+                        {a.platform === 'youtube' ? 'views' : 'impressions'} ·
+                        year
                       </span>
                     </span>
                   </span>
@@ -174,114 +174,76 @@ export function People() {
   )
 }
 
-function PersonPanel({
-  person,
-  focused,
-  onFocus,
-}: {
-  person: PersonId
-  focused: PersonId | null
-  onFocus: (p: PersonId | null) => void
-}) {
-  const p = PEOPLE[person]
-  const total = PERSON_TOTALS[person]
-  const pct = share(total, TOTAL_IMPRESSIONS)
-  const accounts = ACCOUNT_LIST.filter((a) => a.people.includes(person))
-  const dim = focused !== null && focused !== person
-  const color = person === 'dan' ? '#79b0ff' : '#ffad9b'
+function PersonCard({ card }: { card: Card }) {
+  const monthly = addSeries(card.accounts.map((a) => ACCOUNTS[a].monthly))
+  const total = card.accounts.reduce((s, a) => s + ACCOUNTS[a].total, 0)
+  const platforms = Array.from(
+    new Set(card.accounts.map((a) => ACCOUNTS[a].platform)),
+  )
 
   return (
-    <Reveal delay={person === 'dan' ? 0.05 : 0.25} className="h-full">
-      <motion.article
-        onMouseEnter={() => onFocus(person)}
-        onMouseLeave={() => onFocus(null)}
-        animate={{ opacity: dim ? 0.55 : 1, scale: dim ? 0.985 : 1 }}
-        transition={{ duration: 0.4 }}
-        className="flex h-full flex-col rounded-lg bg-white/[0.06] p-6 ring-1 ring-white/10 backdrop-blur-sm sm:p-8"
-      >
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-4">
-            <motion.div
-              whileHover={{ rotate: person === 'dan' ? -3 : 3, scale: 1.04 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 16 }}
-            >
-              <Avatar
-                person={person}
-                size={72}
-                ring={false}
-                className="rounded-full ring-2 ring-white/20"
-              />
-            </motion.div>
-            <div>
-              <h3 className="font-display text-[28px] leading-none tracking-tight">
-                {p.fullName}
-              </h3>
-              <div className="mt-1.5 text-[13px] text-white/60">{p.role}</div>
-              <div className="mt-2 flex items-center gap-1.5">
-                {accounts.map((a) => (
-                  <span
-                    key={a.id}
-                    className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-white/80 ring-1 ring-white/15"
-                  >
-                    <PlatformLogo platform={a.platform} size={11} />
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-          <span
-            className="mono-label rounded-pill px-2.5 py-1 text-[11px] ring-1"
-            style={{
-              color,
-              borderColor: color,
-              boxShadow: `inset 0 0 0 1px ${color}55`,
-            }}
-          >
-            {pct}% of total
-          </span>
-        </div>
-
-        <div className="mt-8">
-          <div className="mono-label text-white/50">
-            impressions credited · 365 days
-          </div>
-          <div className="mt-2 font-display text-[clamp(48px,6vw,80px)] leading-none tracking-[-0.04em]">
-            <Counter value={total} />
-          </div>
-        </div>
-
-        <p className="mt-5 max-w-[46ch] text-[15px] leading-[1.5] text-white/70">
-          {BLURBS[person]}
-        </p>
-
-        <div className="mt-6">
-          <ClientChart height={110} dark>
-            <MonthlyBars
-              values={PERSON_MONTHLY[person]}
-              color={color}
-              dark
-              height={110}
-            />
-          </ClientChart>
-        </div>
-
-        <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-white/10 pt-6 sm:grid-cols-3">
-          {PERSON_METRICS[person].map((m) => (
-            <div key={m.label}>
-              <dt className="text-[12px] leading-tight text-white/50">
-                {m.label}
-              </dt>
-              <dd
-                className={cn(
-                  'tabular mt-1 font-display text-[20px] leading-none tracking-tight',
-                )}
+    <motion.article
+      whileHover={{ y: -3 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+      className="flex h-full flex-col rounded-lg bg-white/[0.06] p-6 ring-1 ring-white/10 backdrop-blur-sm sm:p-7"
+    >
+      <div className="flex items-center gap-4">
+        {card.glyph}
+        <div>
+          <h3 className="font-display text-[26px] leading-none tracking-tight">
+            {card.title}
+          </h3>
+          <div className="mt-2 flex items-center gap-1.5">
+            {platforms.map((p) => (
+              <span
+                key={p}
+                className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-white/80 ring-1 ring-white/15"
               >
-                {formatMetric(m.value, m.format)}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </motion.article>
-    </Reveal>
+                <PlatformLogo platform={p} size={11} />
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <p className="mt-5 text-[15px] leading-[1.5] text-white/70">
+        {card.subtitle}
+      </p>
+
+      <div className="mt-7">
+        <div className="mono-label text-white/50">
+          {card.key === 'show' ? 'views' : 'impressions'} · year
+        </div>
+        <div className="mt-2 font-display text-[clamp(44px,5vw,64px)] leading-none tracking-[-0.04em]">
+          <Counter value={total} />
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <div className="mono-label mb-1 text-white/50">running total</div>
+        <ClientChart height={96} dark>
+          <Sparkline
+            id={card.key}
+            monthly={monthly}
+            color={card.color}
+            dark
+            height={96}
+          />
+        </ClientChart>
+      </div>
+
+      <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-white/10 pt-6 sm:grid-cols-3">
+        {card.stats.map((m) => (
+          <div key={m.label}>
+            <dt className="text-[12px] leading-tight text-white/50">
+              {m.label}
+            </dt>
+            <dd className="tabular mt-1 font-display text-[20px] leading-none tracking-tight">
+              {formatMetric(m.value, m.format)}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </motion.article>
   )
 }

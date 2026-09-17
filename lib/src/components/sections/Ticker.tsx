@@ -1,45 +1,28 @@
-import { Avatar } from '#/components/brand/Avatar'
-import { PlatformLogo } from '#/components/brand/PlatformLogo'
+import { AccountGlyph } from '#/components/brand/Avatar'
 import {
-  ACCOUNTS,
-  MOMENTS,
+  ACCOUNT_LIST,
+  TOTAL_AUDIENCE,
   TOTAL_ENGAGEMENTS,
   TOTAL_WATCH_HOURS,
 } from '#/data/stats'
+import type { AccountId } from '#/data/stats'
 import { compact } from '#/lib/format'
 
-const ITEMS = [
-  {
-    glyph: <PlatformLogo platform="x" size={12} />,
-    label: `${ACCOUNTS['dan-x'].handle}`,
-    value: compact(ACCOUNTS['dan-x'].total),
-    person: 'dan' as const,
-  },
-  {
-    glyph: <PlatformLogo platform="x" size={12} />,
-    label: `${ACCOUNTS['sandra-x'].handle}`,
-    value: compact(ACCOUNTS['sandra-x'].total),
-    person: 'sandra' as const,
-  },
-  {
-    glyph: <PlatformLogo platform="youtube" size={12} />,
-    label: 'Morning Maker Show',
-    value: `${compact(ACCOUNTS['mms-youtube'].total)} views`,
-  },
-  {
-    glyph: <PlatformLogo platform="linkedin" size={12} />,
-    label: 'Sandra',
-    value: compact(ACCOUNTS['sandra-linkedin'].total),
-    person: 'sandra' as const,
-  },
-  { glyph: null, label: 'engagements', value: compact(TOTAL_ENGAGEMENTS) },
-  {
-    glyph: null,
-    label: 'hours watched',
-    value: `${compact(TOTAL_WATCH_HOURS)} h`,
-  },
-  { glyph: null, label: MOMENTS[0].title, value: MOMENTS[0].when },
-  { glyph: null, label: MOMENTS[1].title, value: MOMENTS[1].when },
+interface Item {
+  account?: AccountId
+  label: string
+  value: string
+}
+
+const ITEMS: Item[] = [
+  ...ACCOUNT_LIST.map((a) => ({
+    account: a.id,
+    label: a.label,
+    value: `${compact(a.total)} ${a.platform === 'youtube' ? 'views' : 'impressions'}`,
+  })),
+  { label: 'Engagements', value: compact(TOTAL_ENGAGEMENTS) },
+  { label: 'Followers and subscribers', value: compact(TOTAL_AUDIENCE) },
+  { label: 'Hours watched', value: `${compact(TOTAL_WATCH_HOURS)} h` },
 ]
 
 export function Ticker() {
@@ -52,10 +35,11 @@ export function Ticker() {
             key={i}
             className="flex shrink-0 items-center gap-3 text-[13px] text-ink/80"
           >
-            {it.person && <Avatar person={it.person} size={20} ring={false} />}
-            {it.glyph && <span className="text-primary">{it.glyph}</span>}
+            {it.account && (
+              <AccountGlyph account={it.account} size={22} badge={false} />
+            )}
             <span className="text-muted">{it.label}</span>
-            <span className="tabular font-display text-[15px] text-primary">
+            <span className="tabular font-display text-[15px] text-ink">
               {it.value}
             </span>
             <span className="ml-4 h-1 w-1 rounded-full bg-hairline" />

@@ -1,12 +1,12 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { Avatar } from '#/components/brand/Avatar'
+import { AccountGlyph } from '#/components/brand/Avatar'
 import { PlatformLogo } from '#/components/brand/PlatformLogo'
 import { Reveal } from '#/components/ui/Reveal'
 import {
   ACCOUNTS,
-  COMBINED_MONTHLY,
+  COMBINED_CUMULATIVE,
   MOMENTS,
   MONTH_LABELS,
   PLATFORMS,
@@ -15,26 +15,25 @@ import { cn, compact } from '#/lib/format'
 
 export function Moments() {
   const [open, setOpen] = useState<number | null>(0)
-  const max = Math.max(...COMBINED_MONTHLY)
+  const max = COMBINED_CUMULATIVE[COMBINED_CUMULATIVE.length - 1]
 
   return (
-    <section id="moments" className="scroll-mt-24 py-24 sm:py-32">
+    <section id="moments" className="py-16 sm:py-24">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
-        <Reveal className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-end">
+        <Reveal className="grid gap-6 lg:grid-cols-[1fr_1.2fr] lg:items-end">
           <div>
-            <div className="mono-label text-muted">04 — moments</div>
-            <h2 className="mt-4 font-display text-[clamp(36px,5vw,60px)] leading-[1] tracking-[-0.02em] text-balance text-primary">
-              The spikes, explained.
+            <div className="mono-label text-muted">04 — biggest months</div>
+            <h2 className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] leading-[1] tracking-[-0.02em] text-ink">
+              What moved the total
             </h2>
           </div>
-          <p className="max-w-[560px] text-[18px] leading-[1.4] text-body-muted text-pretty lg:justify-self-end">
-            Reach like this is never evenly distributed. A handful of moments do
-            the heavy lifting; the daily habit is what puts you in position for
-            them.
+          <p className="max-w-[560px] text-[17px] leading-[1.45] text-body-muted lg:justify-self-end">
+            The months that added the most to the yearly total, and what
+            happened in them. The running total is on the right.
           </p>
         </Reveal>
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
           <Reveal>
             <ul className="border-t border-hairline">
               {MOMENTS.map((m, i) => {
@@ -49,21 +48,16 @@ export function Moments() {
                       type="button"
                       onClick={() => setOpen(isOpen ? null : i)}
                       aria-expanded={isOpen}
-                      className="group grid w-full grid-cols-[72px_1fr_auto] items-center gap-4 py-5 text-left sm:grid-cols-[96px_1fr_auto_auto] sm:gap-6"
+                      className="grid w-full grid-cols-[72px_1fr_auto] items-center gap-4 py-5 text-left sm:grid-cols-[96px_1fr_auto_auto] sm:gap-6"
                     >
                       <span className="mono-label text-muted">{m.when}</span>
                       <span className="flex min-w-0 items-center gap-3">
-                        <span className="flex shrink-0 items-center">
-                          {acc.people.map((p, j) => (
-                            <Avatar
-                              key={p}
-                              person={p}
-                              size={28}
-                              className={j > 0 ? '-ml-2' : ''}
-                            />
-                          ))}
-                        </span>
-                        <span className="truncate font-display text-[clamp(18px,2vw,24px)] leading-[1.2] tracking-tight text-primary">
+                        <AccountGlyph
+                          account={m.account}
+                          size={28}
+                          badge={false}
+                        />
+                        <span className="truncate font-display text-[clamp(17px,1.8vw,22px)] leading-[1.2] tracking-tight text-ink">
                           {m.title}
                         </span>
                       </span>
@@ -75,10 +69,10 @@ export function Moments() {
                         }}
                       >
                         <PlatformLogo platform={acc.platform} size={11} />
-                        {PLATFORMS[acc.platform].name}
+                        {acc.label}
                       </span>
                       <span className="flex items-center gap-3">
-                        <span className="tabular font-display text-[18px] text-primary sm:text-[22px]">
+                        <span className="tabular font-display text-[18px] text-ink sm:text-[22px]">
                           {compact(m.value)}
                         </span>
                         <ChevronDown
@@ -115,14 +109,13 @@ export function Moments() {
             </ul>
           </Reveal>
 
-          {/* sidebar heat strip */}
           <Reveal delay={0.1}>
-            <div className="sticky top-28 rounded-lg bg-stone p-6">
+            <div className="rounded-lg bg-stone p-6 lg:sticky lg:top-6">
               <div className="mono-label text-muted">
-                combined, month by month
+                running total by month
               </div>
               <ul className="mt-5 space-y-2">
-                {COMBINED_MONTHLY.map((v, i) => {
+                {COMBINED_CUMULATIVE.map((v, i) => {
                   const hot = MOMENTS.some((m) => m.monthIndex === i)
                   const active =
                     open !== null && MOMENTS[open]?.monthIndex === i
@@ -134,20 +127,20 @@ export function Moments() {
                       <span
                         className={cn(
                           'mono-label',
-                          active ? 'text-primary' : 'text-muted',
+                          active ? 'text-ink' : 'text-muted',
                         )}
                       >
                         {MONTH_LABELS[i]}
                       </span>
-                      <span className="h-2 w-full overflow-hidden rounded-full bg-primary/10">
+                      <span className="h-2 w-full overflow-hidden rounded-full bg-ink/10">
                         <motion.span
                           className="block h-full rounded-full"
                           style={{
                             background: active
-                              ? '#ff7759'
+                              ? '#e5a56e'
                               : hot
-                                ? '#17171c'
-                                : 'rgba(23,23,28,0.45)',
+                                ? '#2b2187'
+                                : 'rgba(43,33,135,0.45)',
                           }}
                           initial={{ width: 0 }}
                           whileInView={{
@@ -164,7 +157,7 @@ export function Moments() {
                       <span
                         className={cn(
                           'tabular text-right',
-                          active ? 'text-primary' : 'text-slate',
+                          active ? 'text-ink' : 'text-slate',
                         )}
                       >
                         {compact(v)}

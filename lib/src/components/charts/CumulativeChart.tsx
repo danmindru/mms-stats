@@ -12,47 +12,38 @@ import type { TooltipContentProps } from 'recharts'
 import {
   ACCOUNTS,
   MONTH_LABELS,
-  PEOPLE,
-  PERSON_MONTHLY,
   PLATFORMS,
   PLATFORM_MONTHLY,
   cumulative,
 } from '#/data/stats'
-import type { AccountId, PersonId, PlatformId } from '#/data/stats'
+import type { AccountId, PlatformId } from '#/data/stats'
 import { compact, cn } from '#/lib/format'
 import { PlatformLogo } from '#/components/brand/PlatformLogo'
-import { Avatar } from '#/components/brand/Avatar'
+import { AccountGlyph } from '#/components/brand/Avatar'
 
-export type SeriesMode = 'platform' | 'person' | 'account'
-export type SeriesKey = PlatformId | PersonId | AccountId
+export type SeriesMode = 'platform' | 'account'
+export type SeriesKey = PlatformId | AccountId
 
 export const SERIES_COLORS: Record<SeriesKey, { light: string; dark: string }> =
   {
     x: { light: '#17171c', dark: '#f4f4f6' },
-    youtube: { light: '#e11d1d', dark: '#ff6b6b' },
-    linkedin: { light: '#0a66c2', dark: '#63a8ff' },
-    dan: { light: '#1863dc', dark: '#79b0ff' },
-    sandra: { light: '#ff7759', dark: '#ffad9b' },
-    'sandra-x': { light: '#ff7759', dark: '#ffad9b' },
+    youtube: { light: '#e11d1d', dark: '#ff7b7b' },
+    linkedin: { light: '#0a66c2', dark: '#7fb6ff' },
+    'sandra-x': { light: '#5b4fd1', dark: '#c4bdff' },
     'dan-x': { light: '#17171c', dark: '#f4f4f6' },
-    'sandra-linkedin': { light: '#0a66c2', dark: '#63a8ff' },
-    'mms-youtube': { light: '#e11d1d', dark: '#ff6b6b' },
+    'sandra-linkedin': { light: '#0a66c2', dark: '#7fb6ff' },
+    'mms-youtube': { light: '#e11d1d', dark: '#ff7b7b' },
   }
 
 export const SERIES_ORDER: Record<SeriesMode, SeriesKey[]> = {
   platform: ['x', 'linkedin', 'youtube'],
-  person: ['sandra', 'dan'],
   account: ['sandra-x', 'dan-x', 'sandra-linkedin', 'mms-youtube'],
 }
 
 const isPlatform = (k: SeriesKey): k is PlatformId => k in PLATFORMS
-const isPerson = (k: SeriesKey): k is PersonId => k in PEOPLE
 
-export const seriesLabel = (k: SeriesKey) => {
-  if (isPlatform(k)) return PLATFORMS[k].name
-  if (isPerson(k)) return PEOPLE[k].name
-  return ACCOUNTS[k].handle
-}
+export const seriesLabel = (k: SeriesKey) =>
+  isPlatform(k) ? PLATFORMS[k].name : ACCOUNTS[k].handle
 
 export function SeriesGlyph({
   k,
@@ -66,25 +57,13 @@ export function SeriesGlyph({
   if (isPlatform(k)) {
     return <PlatformLogo platform={k} size={size} className={className} />
   }
-  if (isPerson(k)) {
-    return (
-      <Avatar person={k} size={size + 4} ring={false} className={className} />
-    )
-  }
-  const acc = ACCOUNTS[k]
   return (
-    <span className={cn('inline-flex items-center', className)}>
-      {acc.people.map((p, i) => (
-        <Avatar
-          key={p}
-          person={p}
-          size={size + 4}
-          ring={false}
-          className={i > 0 ? '-ml-1.5' : ''}
-        />
-      ))}
-      <PlatformLogo platform={acc.platform} size={size - 4} className="ml-1" />
-    </span>
+    <AccountGlyph
+      account={k}
+      size={size + 6}
+      badge={false}
+      className={className}
+    />
   )
 }
 
@@ -94,17 +73,12 @@ export interface Row {
   [key: string]: number | string
 }
 
-const monthlyFor = (k: SeriesKey): number[] => {
-  if (isPlatform(k)) return PLATFORM_MONTHLY[k]
-  if (isPerson(k)) return PERSON_MONTHLY[k]
-  return ACCOUNTS[k].monthly
-}
+const monthlyFor = (k: SeriesKey): number[] =>
+  isPlatform(k) ? PLATFORM_MONTHLY[k] : ACCOUNTS[k].monthly
 
-export const buildRows = (mode: SeriesMode, cumulate: boolean): Row[] => {
+export const buildRows = (mode: SeriesMode): Row[] => {
   const keys = SERIES_ORDER[mode]
-  const series = new Map(
-    keys.map((k) => [k, cumulate ? cumulative(monthlyFor(k)) : monthlyFor(k)]),
-  )
+  const series = new Map(keys.map((k) => [k, cumulative(monthlyFor(k))]))
   return MONTH_LABELS.map((month, i) => {
     const row: Row = { month, i }
     for (const k of keys) row[k] = series.get(k)?.[i] ?? 0
@@ -115,7 +89,6 @@ export const buildRows = (mode: SeriesMode, cumulate: boolean): Row[] => {
 interface Props {
   mode: SeriesMode
   enabled: Record<string, boolean>
-  cumulate?: boolean
   dark?: boolean
   height?: number
   onActiveIndex?: (i: number | null) => void
@@ -127,18 +100,17 @@ interface Props {
 export function CumulativeChart({
   mode,
   enabled,
-  cumulate = true,
   dark = false,
   height = 360,
   onActiveIndex,
   className,
   minimal = false,
 }: Props) {
-  const rows = useMemo(() => buildRows(mode, cumulate), [mode, cumulate])
+  const rows = useMemo(() => buildRows(mode), [mode])
   const keys = SERIES_ORDER[mode].filter((k) => enabled[k] !== false)
   const gridColor = dark ? 'rgba(255,255,255,0.08)' : 'rgba(23,23,28,0.08)'
   const tickColor = dark ? 'rgba(255,255,255,0.55)' : '#93939f'
-  const idPrefix = `${mode}-${dark ? 'd' : 'l'}-${cumulate ? 'c' : 'm'}`
+  const idPrefix = `${mode}-${dark ? 'd' : 'l'}`
 
   return (
     <div className={cn('w-full', className)} style={{ height }}>
@@ -233,7 +205,6 @@ export function CumulativeChart({
                 {...(p as TooltipContentProps)}
                 dark={dark}
                 keys={keys}
-                cumulate={cumulate}
               />
             )}
             isAnimationActive={false}
@@ -252,7 +223,7 @@ export function CumulativeChart({
                 activeDot={{
                   r: 5,
                   strokeWidth: 2,
-                  stroke: dark ? '#003c33' : '#ffffff',
+                  stroke: dark ? '#2b2187' : '#ffffff',
                   fill: c,
                   filter: `url(#${idPrefix}-glow)`,
                 }}
@@ -275,11 +246,9 @@ function ChartTooltip({
   label,
   dark,
   keys,
-  cumulate,
 }: TooltipContentProps & {
   dark: boolean
   keys: SeriesKey[]
-  cumulate: boolean
 }) {
   if (!active || !payload.length) return null
   const total = payload.reduce((a, p) => a + (Number(p.value) || 0), 0)
@@ -289,13 +258,13 @@ function ChartTooltip({
       className={cn(
         'min-w-[200px] rounded-md p-3 text-[13px] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.35)] ring-1 backdrop-blur-md',
         dark
-          ? 'bg-primary/85 text-white ring-white/15'
+          ? 'bg-primary-deep/90 text-white ring-white/15'
           : 'bg-white/90 text-ink ring-hairline',
       )}
     >
       <div className="mono-label mb-2 flex items-center justify-between gap-6 opacity-60">
         <span>{String(label)}</span>
-        <span>{cumulate ? 'running total' : 'in month'}</span>
+        <span>running total</span>
       </div>
       <ul className="space-y-1.5">
         {ordered.map((k) => {
