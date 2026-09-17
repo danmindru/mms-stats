@@ -15,11 +15,20 @@ export interface Property {
   /** One plain sentence. */
   what: string
   /** The one number worth knowing, if there is one. */
-  stat?: { value: string; label: string; source: string }
+  stat?: {
+    value: number
+    format: 'compact' | 'raw'
+    decimals?: number
+    suffix?: string
+    label: string
+    source: string
+  }
   /** Extra links, e.g. the two podcast apps. */
   links?: { label: string; url: string; icon: 'spotify' | 'apple' }[]
   /** Wide preview image (og image of the property), optional. */
   preview?: string
+  /** Which part of the preview to keep when cropped. */
+  previewPosition?: 'left' | 'center' | 'right'
 }
 
 export const PROPERTIES: Property[] = [
@@ -30,9 +39,12 @@ export const PROPERTIES: Property[] = [
     url: 'https://hunted.space?ref=morningmaker',
     icon: '/properties/hunted-space.png',
     preview: '/properties/hunted-og.jpg',
+    previewPosition: 'right',
     what: 'A launch-day dashboard for Product Hunt. Calendars, upvote speed and rankings from the first hours.',
     stat: {
-      value: '3.05M',
+      value: 3_050_000,
+      format: 'compact',
+      decimals: 2,
       label: 'Google impressions in 12 months',
       source: 'Google Search Console, 12 months to Sep 2026. 28.2K clicks.',
     },
@@ -64,9 +76,12 @@ export const PROPERTIES: Property[] = [
     url: 'https://morningmakershow.com/newsletter',
     icon: '/avatars/mms.png',
     preview: '/properties/newsletter-og.jpg',
+    previewPosition: 'right',
     what: 'What we learned from makers that week, products we liked, and the odd discount. Written by Sandra.',
     stat: {
-      value: '65%',
+      value: 65,
+      format: 'raw',
+      suffix: '%',
       label: 'open rate',
       source: 'morningmakershow.com/sponsor',
     },
@@ -78,9 +93,12 @@ export const PROPERTIES: Property[] = [
     url: 'https://morningmakershow.com',
     icon: '/properties/mms-512.png',
     preview: '/properties/mms-og.jpg',
+    previewPosition: 'right',
     what: 'Every episode with a transcript, the blog, and links to what makers were building.',
     stat: {
-      value: '40+',
+      value: 40,
+      format: 'raw',
+      suffix: '+',
       label: 'domain rating',
       source: 'morningmakershow.com/sponsor',
     },
@@ -92,6 +110,7 @@ export const PROPERTIES: Property[] = [
     url: 'https://ralphloop.sh',
     icon: '/properties/ralphloop.png',
     preview: '/properties/ralphloop-og.png',
+    previewPosition: 'center',
     what: 'A long-running AI agent loop that codes for days. One of the tools we build and use on the show.',
   },
   {
@@ -120,6 +139,10 @@ export interface Sponsor {
   /** The file is a square mark with no wordmark; render the name beside it. */
   iconOnly?: boolean
   what: string
+  /** Longer note for featured sponsors. */
+  note?: string
+  /** Where the sponsor shows up. */
+  placements?: string[]
 }
 
 const ref = (u: string) => `${u}${u.includes('?') ? '&' : '?'}ref=morningmaker`
@@ -135,6 +158,8 @@ export const SPONSORS: Sponsor[] = [
     logoDark: '/logos/sentry-dark.svg',
     height: 40,
     what: 'Error and performance monitoring',
+    note: 'Sentry has been with the show longest. It is in the episodes, the newsletter and the blog, where Dan writes about fixing bugs with Sentry and Seer. We run it on our own products.',
+    placements: ['Show', 'Newsletter', 'Blog', 'Site', 'Our products'],
   },
   {
     id: 'sevalla',

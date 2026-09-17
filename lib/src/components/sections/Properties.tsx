@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { useState } from 'react'
 import { ArrowUpRight, Globe, Mail, Podcast, Wrench } from 'lucide-react'
 import { PlatformLogo, SpotifyLogo } from '#/components/brand/PlatformLogo'
+import { Counter } from '#/components/ui/Counter'
 import { Reveal, RevealGroup, RevealItem } from '#/components/ui/Reveal'
 import { SpotlightCard } from '#/components/ui/SpotlightCard'
 import { PROPERTIES, SPONSORS, SPONSORS_BY_TIER } from '#/data/properties'
@@ -90,116 +91,184 @@ export function Properties() {
 function PropertyCard({ p }: { p: Property }) {
   const kind = KIND[p.kind]
   const isX = p.kind === 'social'
+  const pos =
+    p.previewPosition === 'right'
+      ? 'object-right'
+      : p.previewPosition === 'left'
+        ? 'object-left'
+        : 'object-center'
   return (
     <SpotlightCard tilt className="h-full ring-1 ring-hairline">
-      <div className="group relative flex h-full flex-col p-5 sm:p-6">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3">
+      <div className="group relative flex h-full flex-col">
+        {/* header band: the property's own preview, or a glyph field */}
+        <div className="relative h-[124px] overflow-hidden bg-pale">
+          {p.preview ? (
+            <>
+              <img
+                src={p.preview}
+                alt=""
+                draggable={false}
+                className={cn(
+                  'h-full w-full object-cover saturate-[0.85] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]',
+                  pos,
+                )}
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/70 via-white/10 to-transparent" />
+            </>
+          ) : (
+            <GlyphField kind={p.kind} />
+          )}
+          <span className="mono-label absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-xl bg-white/85 px-2 py-1 text-[10px] text-slate ring-1 ring-ink/5 backdrop-blur">
+            {isX ? (
+              <PlatformLogo platform="x" size={9} />
+            ) : (
+              <kind.icon size={11} strokeWidth={1.75} />
+            )}
+            {kind.label}
+          </span>
+        </div>
+
+        <div className="relative flex flex-1 flex-col px-5 pb-5 sm:px-6 sm:pb-6">
+          <div className="-mt-6 flex items-end justify-between gap-3">
             <motion.span
-              className="relative inline-block h-12 w-12 shrink-0 overflow-hidden rounded-md bg-stone ring-1 ring-ink/5"
-              whileHover={{ rotate: [-0, -6, 5, -3, 0] }}
+              className="relative inline-block h-14 w-14 shrink-0 overflow-hidden rounded-md bg-white ring-4 ring-white shadow-[0_8px_24px_-12px_rgba(30,16,53,0.4)]"
+              whileHover={{ rotate: [0, -6, 5, -3, 0] }}
               transition={{ duration: 0.6 }}
             >
               <img
                 src={p.icon}
                 alt=""
-                width={48}
-                height={48}
+                width={56}
+                height={56}
                 draggable={false}
                 className="h-full w-full object-cover"
               />
               {isX && (
-                <span className="absolute -right-0.5 -bottom-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink text-white ring-2 ring-white">
+                <span className="absolute right-0 bottom-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink text-white ring-2 ring-white">
                   <PlatformLogo platform="x" size={9} />
                 </span>
               )}
             </motion.span>
-            <div>
-              <h3 className="font-display text-[20px] leading-tight tracking-tight text-ink">
-                {/* stretched link: covers the card, inner links sit above it */}
-                <a
-                  href={p.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="after:absolute after:inset-0 after:z-[1] after:content-['']"
-                >
-                  {p.name}
-                </a>
-              </h3>
-              <span className="mt-1 inline-flex items-center gap-1.5 text-[12px] text-slate">
-                {isX ? (
-                  <PlatformLogo platform="x" size={10} />
-                ) : (
-                  <kind.icon size={12} strokeWidth={1.75} />
-                )}
-                {kind.label}
-              </span>
-            </div>
+            <ArrowUpRight
+              size={16}
+              className="mb-1 shrink-0 text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink"
+            />
           </div>
-          <ArrowUpRight
-            size={16}
-            className="mt-1 shrink-0 text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink"
-          />
-        </div>
 
-        <p className="mt-4 text-[15px] leading-[1.5] text-body-muted">{p.what}</p>
+          <h3 className="mt-3 font-display text-[21px] leading-tight tracking-tight text-ink">
+            {/* stretched link: covers the card, inner links sit above it */}
+            <a
+              href={p.url}
+              target="_blank"
+              rel="noreferrer"
+              className="after:absolute after:inset-0 after:z-[1] after:content-['']"
+            >
+              {p.name}
+            </a>
+          </h3>
+          <p className="mt-2 text-[15px] leading-[1.5] text-body-muted">
+            {p.what}
+          </p>
 
-        <div className="mt-auto pt-5">
-          {p.stat && (
-            <div className="flex items-end justify-between gap-4 border-t border-hairline pt-4">
-              <div>
-                <div className="font-display text-[34px] leading-none tracking-[-0.03em] text-ink">
-                  {p.stat.value}
+          <div className="mt-auto pt-5">
+            {p.stat && (
+              <div className="flex items-end justify-between gap-4 border-t border-hairline pt-4">
+                <div>
+                  <div className="font-display text-[34px] leading-none tracking-[-0.03em] text-ink">
+                    <Counter
+                      value={p.stat.value}
+                      mode={p.stat.format}
+                      decimals={p.stat.decimals}
+                      suffix={p.stat.suffix}
+                    />
+                  </div>
+                  <div className="mt-1 text-[12px] text-slate">
+                    {p.stat.label}
+                  </div>
                 </div>
-                <div className="mt-1 text-[12px] text-slate">{p.stat.label}</div>
-              </div>
-              <span
-                className="mono-label max-w-[46%] text-right text-[10px] leading-[1.4] text-muted"
-                title={p.stat.source}
-              >
-                {p.stat.source.split('.')[0]}
-              </span>
-            </div>
-          )}
-          {p.links && (
-            <div className="relative z-[2] flex flex-wrap gap-2 border-t border-hairline pt-4">
-              {p.links.map((l) => (
-                <a
-                  key={l.label}
-                  href={l.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    'inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-[13px] ring-1 transition-colors',
-                    l.icon === 'spotify'
-                      ? 'bg-[#1db954]/10 text-[#137a3a] ring-[#1db954]/30 hover:bg-[#1db954]/20'
-                      : 'bg-pale text-primary ring-primary/20 hover:bg-pale-2',
-                  )}
+                <span
+                  className="mono-label max-w-[46%] text-right text-[10px] leading-[1.4] text-muted"
+                  title={p.stat.source}
                 >
-                  {l.icon === 'spotify' ? (
-                    <SpotifyLogo size={13} />
-                  ) : (
-                    <Podcast size={13} />
-                  )}
-                  {l.label}
-                </a>
-              ))}
-            </div>
-          )}
-          {!p.stat && !p.links && p.preview && (
-            <div className="relative -mx-5 -mb-5 mt-1 h-[120px] overflow-hidden rounded-b-lg border-t border-hairline sm:-mx-6 sm:-mb-6">
-              <img
-                src={p.preview}
-                alt=""
-                draggable={false}
-                className="h-full w-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/60 to-transparent" />
-            </div>
-          )}
+                  {p.stat.source.split('.')[0]}
+                </span>
+              </div>
+            )}
+            {p.links && (
+              <div className="relative z-[2] flex flex-wrap gap-2 border-t border-hairline pt-4">
+                {p.links.map((l) => (
+                  <a
+                    key={l.label}
+                    href={l.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={cn(
+                      'inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-[13px] ring-1 transition-all hover:-translate-y-0.5',
+                      l.icon === 'spotify'
+                        ? 'bg-[#1db954]/10 text-[#137a3a] ring-[#1db954]/30 hover:bg-[#1db954]/20'
+                        : 'bg-pale text-primary ring-primary/20 hover:bg-pale-2',
+                    )}
+                  >
+                    {l.icon === 'spotify' ? (
+                      <SpotifyLogo size={13} />
+                    ) : (
+                      <Podcast size={13} />
+                    )}
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </SpotlightCard>
+  )
+}
+
+/** Soft field of floating glyphs for properties without a preview image. */
+function GlyphField({ kind }: { kind: PropertyKind }) {
+  const glyphs =
+    kind === 'podcast'
+      ? [
+          <SpotifyLogo key="s" size={34} />,
+          <Podcast key="a" size={34} strokeWidth={1.5} />,
+          <SpotifyLogo key="s2" size={22} />,
+        ]
+      : kind === 'social'
+        ? [
+            <PlatformLogo key="x" platform="x" size={34} />,
+            <PlatformLogo key="x2" platform="x" size={20} />,
+            <PlatformLogo key="x3" platform="x" size={26} />,
+          ]
+        : [<Globe key="g" size={34} strokeWidth={1.5} />]
+  const spots = [
+    { left: '58%', top: '22%', d: 0 },
+    { left: '78%', top: '48%', d: 0.6 },
+    { left: '44%', top: '58%', d: 1.1 },
+  ] as const
+  return (
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_50%,rgba(216,180,254,0.55),transparent_60%),linear-gradient(90deg,#ffffff,#faf5ff)]">
+      {glyphs.map((g, i) => {
+        const sp = spots[i % spots.length] ?? spots[0]
+        return (
+          <motion.span
+            key={i}
+            className="absolute text-primary/40 transition-colors duration-500 group-hover:text-primary/70"
+            style={{ left: sp.left, top: sp.top }}
+            animate={{ y: [0, -6, 0] }}
+            transition={{
+              duration: 4 + i,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: sp.d,
+            }}
+          >
+            {g}
+          </motion.span>
+        )
+      })}
+    </div>
   )
 }
 
@@ -214,37 +283,84 @@ function SponsorFeature({
   tier: string
   big?: boolean
 }) {
+  if (big) {
+    return (
+      <SpotlightCard tilt className="h-full ring-1 ring-hairline">
+        <a
+          href={s.url}
+          target="_blank"
+          rel="noreferrer"
+          className="group relative flex h-full flex-col justify-between gap-8 overflow-hidden p-6 sm:p-8"
+        >
+          <div className="pointer-events-none absolute -top-20 -right-16 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(216,180,254,0.45),transparent_65%)] transition-transform duration-700 group-hover:scale-125" />
+          <div className="relative flex items-center justify-between">
+            <span className="mono-label text-muted">{tier}</span>
+            <ArrowUpRight
+              size={16}
+              className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink"
+            />
+          </div>
+          <div className="relative grid gap-6 sm:grid-cols-[auto_1fr] sm:items-center">
+            <motion.img
+              src={s.logo}
+              alt={s.name}
+              draggable={false}
+              style={{ height: s.height * 1.5 }}
+              className="w-auto max-w-full object-contain"
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+            />
+            <div>
+              <div className="text-[14px] text-ink">
+                {s.name} · <span className="text-slate">{s.what}</span>
+              </div>
+              {s.note && (
+                <p className="mt-2 max-w-[52ch] text-[14px] leading-[1.5] text-body-muted">
+                  {s.note}
+                </p>
+              )}
+            </div>
+          </div>
+          {s.placements && (
+            <ul className="relative flex flex-wrap gap-1.5">
+              {s.placements.map((pl, i) => (
+                <motion.li
+                  key={pl}
+                  initial={{ opacity: 0, y: 6 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 + i * 0.06, ease: EASE }}
+                  className="rounded-xl bg-pale px-2.5 py-1 text-[12px] text-primary ring-1 ring-primary/15"
+                >
+                  {pl}
+                </motion.li>
+              ))}
+            </ul>
+          )}
+        </a>
+      </SpotlightCard>
+    )
+  }
   return (
     <SpotlightCard tilt className="h-full ring-1 ring-hairline">
       <a
         href={s.url}
         target="_blank"
         rel="noreferrer"
-        className={cn(
-          'group flex h-full items-center justify-between gap-6 p-6',
-          big && 'min-h-[220px] flex-col items-start justify-between sm:p-8',
-        )}
+        className="group flex h-full items-center justify-between gap-6 p-6"
       >
-        <div className={cn('flex w-full items-center justify-between', !big && 'w-auto')}>
-          <span className="mono-label text-muted">{tier}</span>
-          {big && (
-            <ArrowUpRight
-              size={16}
-              className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink"
-            />
-          )}
-        </div>
-        <div className={cn('flex items-center gap-5', big ? 'w-full flex-col items-start gap-4' : 'flex-1')}>
+        <span className="mono-label text-muted">{tier}</span>
+        <div className="flex flex-1 items-center gap-5">
           <motion.img
             src={s.logo}
             alt={s.name}
             draggable={false}
-            style={{ height: big ? s.height * 1.6 : s.height }}
+            style={{ height: s.height }}
             className="w-auto max-w-full object-contain"
             whileHover={{ scale: 1.03 }}
             transition={{ type: 'spring', stiffness: 300, damping: 22 }}
           />
-          <div className={cn(!big && 'ml-auto text-right')}>
+          <div className="ml-auto text-right">
             <div className="text-[14px] text-ink">{s.name}</div>
             <div className="text-[13px] text-slate">{s.what}</div>
           </div>

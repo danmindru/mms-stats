@@ -77,7 +77,7 @@ export function Story() {
           style={{ height: `${FRAMES.length * 100}vh` }}
         >
           <div className="sticky top-0 flex h-screen items-center">
-            <div className="mx-auto grid w-full max-w-[1400px] grid-cols-[0.85fr_1.15fr] items-center gap-14 px-10">
+            <div className="mx-auto grid w-full max-w-[1400px] grid-cols-[0.8fr_1.2fr] items-center gap-14 px-10">
               {/* rail + copy */}
               <div className="relative pl-10">
                 <div className="absolute top-1 bottom-1 left-[7px] w-px bg-white/15" />

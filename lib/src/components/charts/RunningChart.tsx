@@ -61,7 +61,7 @@ export function RunningChart({
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
-          margin={{ top: 18, right: 14, bottom: 0, left: 14 }}
+          margin={{ top: 18, right: 20, bottom: 0, left: 20 }}
           onMouseMove={(s) => {
             const raw = s.activeTooltipIndex
             const idx = raw === undefined || raw === null ? NaN : Number(raw)
@@ -87,6 +87,7 @@ export function RunningChart({
             tickLine={false}
             axisLine={false}
             interval={tickEvery - 1}
+            padding={{ left: 12, right: 12 }}
             dy={8}
             tick={{ fill: axis }}
           />
