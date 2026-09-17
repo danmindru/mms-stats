@@ -41,7 +41,7 @@ export function Sparkline({
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
-          margin={{ top: 6, right: 10, bottom: 0, left: 10 }}
+          margin={{ top: 6, right: 18, bottom: 0, left: 18 }}
         >
           <defs>
             <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">

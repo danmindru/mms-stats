@@ -92,9 +92,12 @@ export function Hero() {
                 />
               </ClientChart>
 
-              <div className="grid grid-cols-3 gap-3 border-t border-white/10 pt-4">
+              <div className="grid gap-2 border-t border-white/10 pt-4 sm:grid-cols-3 sm:gap-3">
                 {(['x', 'linkedin', 'youtube'] as const).map((p, i) => (
-                  <div key={p} className="flex flex-col gap-1">
+                  <div
+                    key={p}
+                    className="flex items-center justify-between gap-3 sm:flex-col sm:items-start sm:gap-1"
+                  >
                     <span className="mono-label flex items-center gap-1.5 text-white/60">
                       <PlatformLogo platform={p} size={11} />
                       {p === 'youtube' ? 'views' : 'impressions'}
