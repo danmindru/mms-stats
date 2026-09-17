@@ -32,11 +32,11 @@ computed in the same file so the UI never carries its own numbers.
 ## Stack
 
 - React 19, TanStack Start / Router, Vite 8, Tailwind CSS v4
-- [recharts](https://recharts.org) — stacked cumulative area chart, monthly bars
-- [motion](https://motion.dev) — scroll reveals, split-word headline, magnetic
-  CTA, cursor spotlight cards, layout-animated segmented control
+- [recharts](https://recharts.org) — stacked running-total area chart, sparklines
+- [motion](https://motion.dev) — scroll reveals, magnetic CTA, cursor spotlight
+  cards, layout-animated segmented control
 - [@number-flow/react](https://number-flow.barvian.me) — rolling numerals
-- [radix-ui](https://www.radix-ui.com) toggle, [lucide-react](https://lucide.dev) icons
+- [lucide-react](https://lucide.dev) icons
 - `@fontsource-variable` Space Grotesk / Inter / JetBrains Mono as stand-ins for
   the reference design system's proprietary fonts
 
@@ -50,9 +50,9 @@ src/
     brand/                 PlatformLogo (X / YouTube / LinkedIn), Avatar, ShowIcon, AccountGlyph
     charts/                CumulativeChart, Sparkline, ClientChart
     ui/                    Button (magnetic pill), Chip, Counter, Reveal, SpotlightCard
-    sections/              Nav (header), Hero, Ticker, Totals, Platforms, People, Moments, Cta, Footer
+    sections/              Header, Hero, Totals, Platforms, People, Moments, Cta, Footer
   routes/                  __root.tsx (document + meta), index.tsx (page)
-public/avatars/            dan.png, sandra.png, mms.png
+public/                    avatars/ (dan, sandra, mms), favicons and og.png made from the show icon
 ```
 
 Design tokens (colours, radii, type scale, easings, keyframes) live in
