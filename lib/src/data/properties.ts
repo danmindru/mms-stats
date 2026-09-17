@@ -38,7 +38,7 @@ export const PROPERTIES: Property[] = [
     kind: 'site',
     url: 'https://hunted.space?ref=morningmaker',
     icon: '/properties/hunted-space.png',
-    preview: '/properties/hunted-og.jpg',
+    preview: '/properties/hunted-preview.jpg',
     previewPosition: 'right',
     what: 'A launch-day dashboard for Product Hunt. Calendars, upvote speed and rankings from the first hours.',
     stat: {
@@ -75,7 +75,7 @@ export const PROPERTIES: Property[] = [
     kind: 'newsletter',
     url: 'https://morningmakershow.com/newsletter',
     icon: '/avatars/mms.png',
-    preview: '/properties/newsletter-og.jpg',
+    preview: '/properties/newsletter-preview.jpg',
     previewPosition: 'right',
     what: 'What we learned from makers that week, products we liked, and the odd discount. Written by Sandra.',
     stat: {
@@ -92,7 +92,7 @@ export const PROPERTIES: Property[] = [
     kind: 'site',
     url: 'https://morningmakershow.com',
     icon: '/properties/mms-512.png',
-    preview: '/properties/mms-og.jpg',
+    preview: '/properties/mms-preview.jpg',
     previewPosition: 'right',
     what: 'Every episode with a transcript, the blog, and links to what makers were building.',
     stat: {
@@ -109,7 +109,7 @@ export const PROPERTIES: Property[] = [
     kind: 'product',
     url: 'https://ralphloop.sh',
     icon: '/properties/ralphloop.png',
-    preview: '/properties/ralphloop-og.png',
+    preview: '/properties/ralphloop-preview.jpg',
     previewPosition: 'center',
     what: 'A long-running AI agent loop that codes for days. One of the tools we build and use on the show.',
   },
@@ -158,7 +158,7 @@ export const SPONSORS: Sponsor[] = [
     logoDark: '/logos/sentry-dark.svg',
     height: 40,
     what: 'Error and performance monitoring',
-    note: 'Sentry has been with the show longest. It is in the episodes, the newsletter and the blog, where Dan writes about fixing bugs with Sentry and Seer. We run it on our own products.',
+    note: 'The show’s headline sponsor. Sentry is in the episodes, the newsletter and the blog, where Dan writes about fixing bugs with Sentry and Seer. We use it on our own products too.',
     placements: ['Show', 'Newsletter', 'Blog', 'Site', 'Our products'],
   },
   {

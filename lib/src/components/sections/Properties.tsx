@@ -386,51 +386,70 @@ function LogoWall({ sponsors }: { sponsors: Sponsor[] }) {
         className="grid grid-cols-2 gap-px overflow-hidden rounded-lg bg-hairline ring-1 ring-hairline sm:grid-cols-3 lg:grid-cols-5"
         onMouseLeave={() => setHover(null)}
       >
-        {sponsors.map((s, i) => (
-          <motion.li
-            key={s.id}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '0px 0px -8% 0px' }}
-            transition={{ duration: 0.6, delay: (i % 5) * 0.05 + Math.floor(i / 5) * 0.08, ease: EASE }}
-            className="bg-white"
-          >
-            <a
-              href={s.url}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${s.name} — ${s.what}`}
-              onMouseEnter={() => setHover(s.id)}
-              onFocus={() => setHover(s.id)}
-              className="group relative flex h-[104px] items-center justify-center overflow-hidden px-6 transition-colors hover:bg-pale"
+        {sponsors.map((s, i) => {
+          const active = hover === s.id
+          return (
+            <motion.li
+              key={s.id}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+              transition={{
+                duration: 0.6,
+                delay: (i % 5) * 0.05 + Math.floor(i / 5) * 0.08,
+                ease: EASE,
+              }}
+              className={cn(
+                'transition-colors duration-300',
+                active ? 'bg-pale' : 'bg-white',
+              )}
             >
-              <motion.span
-                className="flex items-center gap-2.5 opacity-70 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
-                whileHover={{ y: -3, scale: 1.04 }}
-                transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+              <a
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${s.name} — ${s.what}`}
+                onMouseEnter={() => setHover(s.id)}
+                onFocus={() => setHover(s.id)}
+                onBlur={() => setHover(null)}
+                className="relative flex h-[104px] items-center justify-center overflow-hidden px-6 outline-none"
               >
-                <img
-                  src={s.logo}
-                  alt={s.iconOnly ? '' : s.name}
-                  draggable={false}
-                  style={{ height: s.iconOnly ? 28 : Math.min(s.height, 36) }}
+                <motion.span
                   className={cn(
-                    'w-auto max-w-[140px] object-contain',
-                    s.iconOnly && 'rounded-sm',
+                    'flex items-center gap-2.5 transition-[filter,opacity] duration-500',
+                    active ? 'opacity-100 grayscale-0' : 'opacity-70 grayscale',
                   )}
-                />
-                {s.iconOnly && (
-                  <span className="font-display text-[16px] tracking-tight text-ink">
-                    {s.name}
-                  </span>
-                )}
-              </motion.span>
-              <span className="pointer-events-none absolute inset-x-0 bottom-2 translate-y-2 text-center text-[11px] text-slate opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                {s.what}
-              </span>
-            </a>
-          </motion.li>
-        ))}
+                  animate={active ? { y: -6, scale: 1.05 } : { y: 0, scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+                >
+                  <img
+                    src={s.logo}
+                    alt={s.iconOnly ? '' : s.name}
+                    draggable={false}
+                    style={{ height: s.iconOnly ? 28 : Math.min(s.height, 36) }}
+                    className={cn(
+                      'w-auto max-w-[140px] object-contain',
+                      s.iconOnly && 'rounded-sm',
+                    )}
+                  />
+                  {s.iconOnly && (
+                    <span className="font-display text-[16px] tracking-tight text-ink">
+                      {s.name}
+                    </span>
+                  )}
+                </motion.span>
+                <motion.span
+                  className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-[11px] text-slate"
+                  initial={false}
+                  animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  {s.what}
+                </motion.span>
+              </a>
+            </motion.li>
+          )
+        })}
       </ul>
     </div>
   )
