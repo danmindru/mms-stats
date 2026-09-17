@@ -77,7 +77,7 @@ export interface Platform {
 }
 
 export const PLATFORMS: Record<PlatformId, Platform> = {
-  x: { id: 'x', name: 'X', metricLabel: 'impressions', onLight: '#17171c' },
+  x: { id: 'x', name: 'X', metricLabel: 'impressions', onLight: '#17152e' },
   youtube: {
     id: 'youtube',
     name: 'YouTube',

@@ -33,28 +33,24 @@ const KPIS = [
     label: 'Impressions',
     value: TOTAL_IMPRESSIONS,
     note: 'X and LinkedIn impressions plus YouTube views',
-    glow: 'rgba(43, 33, 135, 0.14)',
   },
   {
     icon: Heart,
     label: 'Engagements',
     value: TOTAL_ENGAGEMENTS,
     note: 'Likes, replies, reposts, saves and reactions',
-    glow: 'rgba(229, 165, 110, 0.18)',
   },
   {
     icon: Users,
     label: 'Followers',
     value: TOTAL_AUDIENCE,
     note: 'X followers plus YouTube subscribers',
-    glow: 'rgba(10, 102, 194, 0.14)',
   },
   {
     icon: Clock,
     label: 'Hours watched',
     value: TOTAL_WATCH_HOURS,
     note: 'Morning Maker Show, past year',
-    glow: 'rgba(225, 29, 29, 0.12)',
   },
 ]
 
@@ -107,7 +103,6 @@ export function Totals() {
           {KPIS.map((k) => (
             <RevealItem key={k.label}>
               <SpotlightCard
-                glow={k.glow}
                 tilt
                 className="h-full ring-1 ring-hairline"
               >

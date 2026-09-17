@@ -26,11 +26,11 @@ export type SeriesKey = PlatformId | AccountId
 
 export const SERIES_COLORS: Record<SeriesKey, { light: string; dark: string }> =
   {
-    x: { light: '#17171c', dark: '#f4f4f6' },
+    x: { light: '#17152e', dark: '#f3f1ff' },
     youtube: { light: '#e11d1d', dark: '#ff7b7b' },
     linkedin: { light: '#0a66c2', dark: '#7fb6ff' },
-    'sandra-x': { light: '#5b4fd1', dark: '#c4bdff' },
-    'dan-x': { light: '#17171c', dark: '#f4f4f6' },
+    'sandra-x': { light: '#5b4fd1', dark: '#b7b0ee' },
+    'dan-x': { light: '#17152e', dark: '#f3f1ff' },
     'sandra-linkedin': { light: '#0a66c2', dark: '#7fb6ff' },
     'mms-youtube': { light: '#e11d1d', dark: '#ff7b7b' },
   }
@@ -108,7 +108,7 @@ export function CumulativeChart({
 }: Props) {
   const rows = useMemo(() => buildRows(mode), [mode])
   const keys = SERIES_ORDER[mode].filter((k) => enabled[k] !== false)
-  const gridColor = dark ? 'rgba(255,255,255,0.08)' : 'rgba(23,23,28,0.08)'
+  const gridColor = dark ? 'rgba(255,255,255,0.08)' : 'rgba(23,21,46,0.08)'
   const tickColor = dark ? 'rgba(255,255,255,0.55)' : '#93939f'
   const idPrefix = `${mode}-${dark ? 'd' : 'l'}`
 
@@ -196,7 +196,7 @@ export function CumulativeChart({
           />
           <Tooltip
             cursor={{
-              stroke: dark ? 'rgba(255,255,255,0.35)' : 'rgba(23,23,28,0.35)',
+              stroke: dark ? 'rgba(255,255,255,0.35)' : 'rgba(23,21,46,0.35)',
               strokeWidth: 1,
               strokeDasharray: '3 4',
             }}
@@ -256,7 +256,7 @@ function ChartTooltip({
   return (
     <div
       className={cn(
-        'min-w-[200px] rounded-md p-3 text-[13px] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.35)] ring-1 backdrop-blur-md',
+        'min-w-[200px] rounded-md p-3 text-[13px] shadow-[0_12px_40px_-12px_rgba(15,13,36,0.35)] ring-1 backdrop-blur-md',
         dark
           ? 'bg-primary-deep/90 text-white ring-white/15'
           : 'bg-white/90 text-ink ring-hairline',

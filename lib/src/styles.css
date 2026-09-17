@@ -14,25 +14,20 @@
   --color-primary-soft: #5b4fd1;
   --color-lavender: #b7b0ee;
   --color-pale-indigo: #efedfb;
-  --color-black: #0f0d24;
   --color-ink: #17152e;
   --color-canvas: #ffffff;
   --color-stone: #f1efea;
   --color-stone-2: #e7e4dd;
-  --color-pale-sand: #fbf3ea;
   --color-hairline: #dcdae6;
-  --color-border-light: #e6e5ee;
-  --color-card-border: #f3f2f8;
   --color-muted: #8f8ca3;
   --color-slate: #6f6c86;
   --color-body-muted: #5c5a70;
   --color-focus: #5b4fd1;
   --color-sand: #e5a56e;
   --color-sand-soft: #f2cfae;
-  --color-error: #b30000;
 
   /* Brand */
-  --color-brand-x: #17171c;
+  --color-brand-x: #17152e;
   --color-brand-youtube: #ff0000;
   --color-brand-linkedin: #0a66c2;
 

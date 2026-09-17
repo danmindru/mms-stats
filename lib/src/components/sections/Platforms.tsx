@@ -24,7 +24,6 @@ interface CardSpec {
   subtitle: string
   bullets: string[]
   accounts: AccountId[]
-  glow: string
 }
 
 const CARDS: CardSpec[] = [
@@ -39,7 +38,6 @@ const CARDS: CardSpec[] = [
       `${compact(metric('dan-x', 'Followers') + metric('sandra-x', 'Followers'))} followers across both accounts`,
     ],
     accounts: ['dan-x', 'sandra-x'],
-    glow: 'rgba(23,23,28,0.10)',
   },
   {
     platform: 'youtube',
@@ -53,7 +51,6 @@ const CARDS: CardSpec[] = [
       `${compact(metric('mms-youtube', 'All-time views'))} views since the channel started`,
     ],
     accounts: ['mms-youtube'],
-    glow: 'rgba(225,29,29,0.14)',
   },
   {
     platform: 'linkedin',
@@ -66,7 +63,6 @@ const CARDS: CardSpec[] = [
       `${compact(metric('sandra-linkedin', 'Saves'))} saves`,
     ],
     accounts: ['sandra-linkedin'],
-    glow: 'rgba(10,102,194,0.16)',
   },
 ]
 
@@ -163,7 +159,7 @@ function PlatformCard({ spec }: { spec: CardSpec }) {
   const total = PLATFORM_TOTALS[spec.platform]
 
   return (
-    <SpotlightCard glow={spec.glow} className="h-full ring-1 ring-ink/5">
+    <SpotlightCard className="h-full ring-1 ring-ink/5">
       <div className="flex h-full flex-col p-6 sm:p-8">
         <div className="flex items-start justify-between">
           <span
