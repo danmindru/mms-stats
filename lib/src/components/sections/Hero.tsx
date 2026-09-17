@@ -59,7 +59,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE, delay: 0.35 }}
-            className="grain relative overflow-hidden rounded-lg bg-primary text-white"
+            className="grain relative overflow-hidden rounded-lg bg-band text-white"
           >
             <div
               className="blueprint-dark pointer-events-none absolute inset-0 opacity-70"
@@ -69,11 +69,11 @@ export function Hero() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span className="flex items-center gap-3">
                   <TeamAvatars size={28} />
-                  <span className="mono-label text-white/70">
+                  <span className="mono-label text-white/85">
                     yearly running total · all accounts
                   </span>
                 </span>
-                <div className="flex items-center gap-2 text-white/70">
+                <div className="flex items-center gap-2 text-white/85">
                   <PlatformLogo platform="x" size={14} />
                   <PlatformLogo platform="youtube" size={14} />
                   <PlatformLogo platform="linkedin" size={14} />
@@ -90,13 +90,13 @@ export function Hero() {
                 />
               </ClientChart>
 
-              <div className="grid gap-2 border-t border-white/10 pt-4 sm:grid-cols-3 sm:gap-3">
+              <div className="grid gap-2 border-t border-white/15 pt-4 sm:grid-cols-3 sm:gap-3">
                 {(['x', 'linkedin', 'youtube'] as const).map((p, i) => (
                   <div
                     key={p}
                     className="flex items-center justify-between gap-3 sm:flex-col sm:items-start sm:gap-1"
                   >
-                    <span className="mono-label flex items-center gap-1.5 text-white/60">
+                    <span className="mono-label flex items-center gap-1.5 text-white/75">
                       <PlatformLogo platform={p} size={11} />
                       {p === 'youtube' ? 'views' : 'impressions'}
                     </span>

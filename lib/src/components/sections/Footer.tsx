@@ -12,12 +12,12 @@ export function Footer() {
               <div className="font-display text-[16px] tracking-tight">
                 {SHOW.name}
               </div>
-              <div className="mono-label text-[10px] text-white/50">
+              <div className="mono-label text-[10px] text-white/70">
                 Dan &amp; Sandra
               </div>
             </div>
           </div>
-          <p className="mt-6 max-w-[48ch] text-[13px] leading-[1.5] text-white/60">
+          <p className="mt-6 max-w-[48ch] text-[13px] leading-[1.5] text-white/75">
             Yearly stats for {WINDOW.short}. Built with React, TanStack Start,
             Recharts, Motion and NumberFlow.
           </p>
@@ -25,7 +25,7 @@ export function Footer() {
 
         <div>
           <div className="mono-label text-sand">how the numbers were made</div>
-          <ul className="mt-4 space-y-2.5 text-[13px] leading-[1.5] text-white/60">
+          <ul className="mt-4 space-y-2.5 text-[13px] leading-[1.5] text-white/75">
             <li>
               X and YouTube: {WINDOW.start} to {WINDOW.end} ({WINDOW.days}{' '}
               days).
@@ -47,7 +47,7 @@ export function Footer() {
         </div>
 
         <div>
-          <div className="mono-label text-white/50">accounts</div>
+          <div className="mono-label text-white/70">accounts</div>
           <ul className="mt-4 space-y-2.5 text-[13px]">
             {Object.values(ACCOUNTS).map((a) => (
               <li key={a.id}>
@@ -55,7 +55,7 @@ export function Footer() {
                   href={a.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-white"
+                  className="inline-flex items-center gap-2 text-white/85 transition-colors hover:text-white"
                 >
                   <AccountGlyph account={a.id} size={20} badge={false} />
                   {a.label}
@@ -65,8 +65,8 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-5 py-5 text-[12px] text-white/40 sm:px-8">
+      <div className="border-t border-white/15">
+        <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-5 py-5 text-[12px] text-white/60 sm:px-8">
           <span>© {new Date().getFullYear()} Dan &amp; Sandra</span>
           <span className="mono-label text-[10px]">updated Sep 16, 2026</span>
         </div>

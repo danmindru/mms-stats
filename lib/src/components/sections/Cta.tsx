@@ -25,7 +25,7 @@ const OFFERS = [
 export function Cta() {
   return (
     <section className="px-3 pb-6 sm:px-5">
-      <div className="relative overflow-hidden rounded-lg bg-pale-indigo">
+      <div className="relative overflow-hidden rounded-lg bg-pale">
         <div
           className="blueprint pointer-events-none absolute inset-0 opacity-70"
           aria-hidden
@@ -97,7 +97,7 @@ export function Cta() {
                       {o.body}
                     </p>
                   </div>
-                  <span className="ml-auto mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pale-indigo text-primary">
+                  <span className="ml-auto mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-pale text-primary">
                     <Check size={11} strokeWidth={3} />
                   </span>
                 </motion.div>

@@ -5,29 +5,39 @@
 
 @theme {
   /*
-   * Palette built around the Morning Maker Show indigo (#2b2187).
+   * Palette on Tailwind's purple scale (50–950) so every surface, text and
+   * chart colour has a known contrast partner:
+   *   purple-950 #3b0764  deepest band / footer
+   *   purple-900 #581c87  dark bands and cards      (white text 11:1)
+   *   purple-700 #7e22ce  primary: buttons, accents (white text 6.6:1)
+   *   purple-500 #a855f7  soft accent, focus ring
+   *   purple-300 #d8b4fe  lavender highlight on dark
+   *   purple-100 #f3e8ff  pale surface
+   *   purple-50  #faf5ff  palest wash
    * Structure follows the Cohere system: white canvas, one dark band colour,
-   * a warm neutral surface, hairline rules, and a single warm accent.
+   * a warm neutral surface, hairline rules, and a single warm accent (amber).
    */
-  --color-primary: #2b2187;
-  --color-primary-deep: #1c1563;
-  --color-primary-soft: #5b4fd1;
-  --color-lavender: #b7b0ee;
-  --color-pale-indigo: #efedfb;
-  --color-ink: #17152e;
+  --color-primary: #7e22ce;
+  --color-primary-deep: #3b0764;
+  --color-band: #581c87;
+  --color-primary-soft: #a855f7;
+  --color-lavender: #d8b4fe;
+  --color-pale: #faf5ff;
+  --color-pale-2: #f3e8ff;
+  --color-ink: #1e1035;
   --color-canvas: #ffffff;
-  --color-stone: #f1efea;
-  --color-stone-2: #e7e4dd;
-  --color-hairline: #dcdae6;
-  --color-muted: #8f8ca3;
-  --color-slate: #6f6c86;
-  --color-body-muted: #5c5a70;
-  --color-focus: #5b4fd1;
-  --color-sand: #e5a56e;
-  --color-sand-soft: #f2cfae;
+  --color-stone: #f3f1f6;
+  --color-stone-2: #e9e5f0;
+  --color-hairline: #e2dbeb;
+  --color-muted: #8b7fa3;
+  --color-slate: #6b5f85;
+  --color-body-muted: #57506b;
+  --color-focus: #a855f7;
+  --color-sand: #fbbf24;
+  --color-sand-soft: #fde68a;
 
   /* Brand */
-  --color-brand-x: #17152e;
+  --color-brand-x: #1e1035;
   --color-brand-youtube: #ff0000;
   --color-brand-linkedin: #0a66c2;
 
@@ -145,8 +155,8 @@
 /* Faint blueprint grid for the hero canvas. */
 @utility blueprint {
   background-image:
-    linear-gradient(to right, rgba(43, 33, 135, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(43, 33, 135, 0.06) 1px, transparent 1px);
+    linear-gradient(to right, rgba(126, 34, 206, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(126, 34, 206, 0.07) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(
     ellipse 80% 70% at 50% 0%,

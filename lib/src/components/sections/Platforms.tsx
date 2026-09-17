@@ -228,7 +228,7 @@ function PlatformCard({ spec }: { spec: CardSpec }) {
         <ul className="mt-5 space-y-2.5 text-[14px] text-ink">
           {spec.bullets.map((b) => (
             <li key={b} className="flex items-start gap-2.5">
-              <span className="mt-[3px] inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-pale-indigo text-primary">
+              <span className="mt-[3px] inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-pale text-primary">
                 <Check size={10} strokeWidth={3} />
               </span>
               <span>{b}</span>
