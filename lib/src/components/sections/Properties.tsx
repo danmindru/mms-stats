@@ -288,15 +288,27 @@ function LogoWall({ sponsors }: { sponsors: Sponsor[] }) {
               onFocus={() => setHover(s.id)}
               className="group relative flex h-[104px] items-center justify-center overflow-hidden px-6 transition-colors hover:bg-pale"
             >
-              <motion.img
-                src={s.logo}
-                alt={s.name}
-                draggable={false}
-                style={{ height: Math.min(s.height, 36) }}
-                className="w-auto max-w-[140px] object-contain opacity-70 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
+              <motion.span
+                className="flex items-center gap-2.5 opacity-70 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
                 whileHover={{ y: -3, scale: 1.04 }}
                 transition={{ type: 'spring', stiffness: 320, damping: 20 }}
-              />
+              >
+                <img
+                  src={s.logo}
+                  alt={s.iconOnly ? '' : s.name}
+                  draggable={false}
+                  style={{ height: s.iconOnly ? 28 : Math.min(s.height, 36) }}
+                  className={cn(
+                    'w-auto max-w-[140px] object-contain',
+                    s.iconOnly && 'rounded-sm',
+                  )}
+                />
+                {s.iconOnly && (
+                  <span className="font-display text-[16px] tracking-tight text-ink">
+                    {s.name}
+                  </span>
+                )}
+              </motion.span>
               <span className="pointer-events-none absolute inset-x-0 bottom-2 translate-y-2 text-center text-[11px] text-slate opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                 {s.what}
               </span>

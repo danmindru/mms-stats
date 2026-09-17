@@ -147,12 +147,12 @@ export function RunningChart({
             <ReferenceLine
               key={mk.index}
               x={labels[mk.index] ?? ''}
-              stroke={dark ? 'rgba(255,255,255,0.35)' : 'rgba(30,16,53,0.25)'}
-              strokeDasharray="2 4"
+              stroke={dark ? 'rgba(255,255,255,0.5)' : 'rgba(126,34,206,0.6)'}
+              strokeDasharray="3 4"
               label={{
                 value: mk.label,
                 position: 'insideTopLeft',
-                fill: dark ? 'rgba(255,255,255,0.7)' : '#6b5f85',
+                fill: dark ? 'rgba(255,255,255,0.8)' : '#7e22ce',
                 fontSize: 10,
                 fontFamily: 'var(--font-mono)',
                 dx: 4,

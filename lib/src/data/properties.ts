@@ -117,6 +117,8 @@ export interface Sponsor {
   logoDark?: string
   /** Rendered height of the wordmark in px; logos have different proportions. */
   height: number
+  /** The file is a square mark with no wordmark; render the name beside it. */
+  iconOnly?: boolean
   what: string
 }
 
@@ -220,6 +222,7 @@ export const SPONSORS: Sponsor[] = [
     tier: 'sponsor',
     logo: '/logos/pageai-light.webp',
     height: 40,
+    iconOnly: true,
     what: 'AI website builder',
   },
   {
@@ -278,6 +281,7 @@ export const SPONSORS: Sponsor[] = [
     tier: 'sponsor',
     logo: '/logos/uglyduckling-light.svg',
     height: 30,
+    iconOnly: true,
     what: 'Design feedback',
   },
   {
@@ -296,6 +300,7 @@ export const SPONSORS: Sponsor[] = [
     tier: 'sponsor',
     logo: '/logos/pageui-light.webp',
     height: 40,
+    iconOnly: true,
     what: 'Landing page components',
   },
   {
@@ -324,6 +329,7 @@ export const SPONSORS: Sponsor[] = [
     tier: 'sponsor',
     logo: '/logos/adkit-light.svg',
     height: 40,
+    iconOnly: true,
     what: 'Ads toolbox',
   },
   {
@@ -333,6 +339,7 @@ export const SPONSORS: Sponsor[] = [
     tier: 'sponsor',
     logo: '/logos/cadscene-light.png',
     height: 40,
+    iconOnly: true,
     what: 'AI architectural rendering',
   },
   {
@@ -342,6 +349,7 @@ export const SPONSORS: Sponsor[] = [
     tier: 'sponsor',
     logo: '/logos/saventify-light.webp',
     height: 40,
+    iconOnly: true,
     what: 'Wedding invitations',
   },
 ]

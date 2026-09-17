@@ -166,9 +166,8 @@ export function YouTube() {
                           <div className="font-display text-[clamp(34px,3.6vw,48px)] leading-none tracking-[-0.035em] text-ink">
                             <Counter
                               value={s.total}
+                              inView={false}
                               decimals={s.total >= 100_000 ? 0 : 1}
-                              suffix={m.format === 'hours' ? ' h' : undefined}
-                              suffixClassName="text-[0.5em] text-muted ml-1"
                             />
                           </div>
                           <div className="mt-1.5 text-[12px] text-slate">
@@ -217,8 +216,8 @@ export function YouTube() {
                     value={shown}
                     inView={false}
                     decimals={shown >= 100_000 ? 0 : 1}
-                    suffix={metric === 'hours' ? ' h' : undefined}
-                    suffixClassName="text-[0.5em] text-muted ml-1"
+                    suffix={metric === 'hours' ? ' hours' : undefined}
+                    suffixClassName="text-[0.3em] text-muted ml-2 font-sans tracking-normal"
                   />
                 </div>
               </div>

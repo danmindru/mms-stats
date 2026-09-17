@@ -21,7 +21,7 @@ export const FRAMES: Frame[] = [
     kicker: 'Monday and Friday, early',
     title: 'Good morning. We go live.',
     body: 'Dan and Sandra read what makers posted under #buildinpublic since the last show: launches, numbers, struggles, the odd piano in a park. Live on YouTube and X, then out as a podcast.',
-    image: '/story/live.png',
+    image: '/story/live.webp',
     alt: 'Dan and Sandra at a desk with a microphone, going live in the morning.',
   },
   {
@@ -30,7 +30,7 @@ export const FRAMES: Frame[] = [
     kicker: 'When we share a product',
     title: 'We try it on air.',
     body: 'We open it and use it in front of everyone. If it is good we say so. If something breaks, that is in the show too. People trust that, which is the whole point.',
-    image: '/story/tryout.png',
+    image: '/story/tryout.webp',
     alt: 'Dan typing while Sandra points at the screen, trying a product on air.',
   },
   {
@@ -39,7 +39,7 @@ export const FRAMES: Frame[] = [
     kicker: 'After the show',
     title: 'Then it travels.',
     body: 'One episode becomes a podcast on Spotify and Apple, a newsletter with a 65% open rate, posts on our X and LinkedIn accounts, and a spot on Hunted.Space. Most sponsors stay for months. We end up using their tools in our own products.',
-    image: '/story/travel.png',
+    image: '/story/travel.webp',
     alt: 'The show at the centre with lines reaching out to a community of builders.',
   },
 ]
