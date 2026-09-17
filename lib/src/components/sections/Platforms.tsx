@@ -45,7 +45,7 @@ const CARDS: CardSpec[] = [
     subtitle:
       'A live show about building things. Dan and Sandra host it together.',
     bullets: [
-      `${formatMetric(metric('mms-youtube', 'Watch time'), 'hours')} watched, up 23% on last year`,
+      `${formatMetric(metric('mms-youtube', 'Watch time'), 'hours')} watched, up 23% on the year before`,
       `${compact(metric('mms-youtube', 'New subscribers'))} new subscribers, up 15%`,
       `${compact(metric('mms-youtube', 'Subscribers'))} subscribers in total`,
       `${compact(metric('mms-youtube', 'All-time views'))} views since the channel started`,
@@ -57,7 +57,7 @@ const CARDS: CardSpec[] = [
     title: 'LinkedIn',
     subtitle: 'Sandra’s account. Longer posts, mostly about work.',
     bullets: [
-      'Up 58% on the period before',
+      'Up 58% on the year before, as LinkedIn reports it',
       `${compact(metric('sandra-linkedin', 'Social engagements'))} engagements`,
       `${compact(metric('sandra-linkedin', 'Reactions'))} reactions and ${compact(metric('sandra-linkedin', 'Comments'))} comments`,
       `${compact(metric('sandra-linkedin', 'Saves'))} saves`,
@@ -182,7 +182,7 @@ function PlatformCard({ spec }: { spec: CardSpec }) {
         </div>
 
         <div className="mt-8">
-          <div className="mono-label text-muted">{p.metricLabel} · year</div>
+          <div className="mono-label text-muted">yearly {p.metricLabel}</div>
           <div className="mt-2 font-display text-[clamp(44px,5vw,64px)] leading-none tracking-[-0.035em] text-ink">
             <Counter value={total} />
           </div>

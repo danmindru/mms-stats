@@ -30,27 +30,27 @@ import { cn, compact } from '#/lib/format'
 const KPIS = [
   {
     icon: Eye,
-    label: 'Impressions',
+    label: 'yearly impressions',
     value: TOTAL_IMPRESSIONS,
     note: 'X and LinkedIn impressions plus YouTube views',
   },
   {
     icon: Heart,
-    label: 'Engagements',
+    label: 'yearly engagements',
     value: TOTAL_ENGAGEMENTS,
     note: 'Likes, replies, reposts, saves and reactions',
   },
   {
     icon: Users,
-    label: 'Followers',
+    label: 'followers now',
     value: TOTAL_AUDIENCE,
-    note: 'X followers plus YouTube subscribers',
+    note: 'X followers plus YouTube subscribers, as of Sep 2026',
   },
   {
     icon: Clock,
-    label: 'Hours watched',
+    label: 'yearly hours watched',
     value: TOTAL_WATCH_HOURS,
-    note: 'Morning Maker Show, past year',
+    note: 'Morning Maker Show on YouTube',
   },
 ]
 
@@ -90,7 +90,7 @@ export function Totals() {
             </h2>
           </div>
           <p className="max-w-[560px] text-[17px] leading-[1.45] text-body-muted lg:justify-self-end">
-            Every chart on this page is a running total for the year. Hover the
+            Every chart on this page is a yearly running total. Hover the
             chart to see the total at any month. Click a label to hide or show
             that part.
           </p>
@@ -109,7 +109,7 @@ export function Totals() {
                 <div className="flex h-full flex-col justify-between gap-6 p-5 sm:p-6">
                   <div className="flex items-center justify-between">
                     <span className="mono-label text-muted">
-                      {k.label} · year
+                      {k.label}
                     </span>
                     <k.icon
                       size={16}

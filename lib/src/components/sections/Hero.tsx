@@ -133,8 +133,8 @@ export function Hero() {
                   <span className="flex flex-col leading-tight">
                     <span className="text-[14px] text-ink">{a.label}</span>
                     <span className="mono-label text-[10px] text-muted">
-                      {a.platform === 'youtube' ? 'views' : 'impressions'} ·
-                      year
+                      yearly{' '}
+                      {a.platform === 'youtube' ? 'views' : 'impressions'}
                     </span>
                   </span>
                 </span>

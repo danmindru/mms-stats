@@ -39,7 +39,7 @@ export function Cta() {
             <p className="mt-6 max-w-[54ch] text-[17px] leading-[1.45] text-body-muted">
               We take a few sponsors a year, and only for tools we would use
               anyway. The four accounts on this page had{' '}
-              {compact(TOTAL_IMPRESSIONS)} impressions this year. Three ways to
+              {compact(TOTAL_IMPRESSIONS)} yearly impressions. Three ways to
               work together are listed on the right.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
