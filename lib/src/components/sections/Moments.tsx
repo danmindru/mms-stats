@@ -24,12 +24,13 @@ export function Moments() {
           <div>
             <div className="mono-label text-muted">04 — biggest months</div>
             <h2 className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] leading-[1] tracking-[-0.02em] text-ink">
-              What moved the total
+              The months that added the most
             </h2>
           </div>
           <p className="max-w-[560px] text-[17px] leading-[1.45] text-body-muted lg:justify-self-end">
-            The months that added the most to the yearly total, and what
-            happened in them. The running total is on the right.
+            Six months added most of the yearly total. Each one is listed
+            with what happened in it. The running total for every month is on
+            the right.
           </p>
         </Reveal>
 

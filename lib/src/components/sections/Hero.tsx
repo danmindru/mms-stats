@@ -49,8 +49,8 @@ export function Hero() {
               transition={{ duration: 0.8, ease: EASE, delay: 0.5 }}
               className="mt-4 max-w-[46ch] text-[17px] leading-[1.45] text-body-muted"
             >
-              Impressions across Dan’s and Sandra’s X accounts, the Morning
-              Maker Show on YouTube, and Sandra’s LinkedIn in the past year.
+              Yearly impressions for Dan’s and Sandra’s X accounts, the Morning
+              Maker Show on YouTube and Sandra’s LinkedIn, added together.
               About {full(PER_DAY)} a day.
             </motion.p>
           </div>

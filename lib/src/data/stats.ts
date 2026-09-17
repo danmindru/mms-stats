@@ -331,7 +331,7 @@ export const MOMENTS: Moment[] = [
     title: '37.2M impressions on X in one month',
     value: 37_200_000,
     detail:
-      'Sandra’s biggest month on X. Several posts went viral in the same weeks. All organic; no paid promotion.',
+      'Sandra’s biggest month on X. Several posts were shared very widely in the same few weeks. None of it was paid.',
   },
   {
     when: 'Oct 2025',
@@ -340,7 +340,7 @@ export const MOMENTS: Moment[] = [
     title: 'Top LinkedIn post: 184K impressions',
     value: 184_000,
     detail:
-      'A post about being quoted by Elon Musk. 184K impressions and 806 engagements from one post.',
+      'One post about being quoted by Elon Musk. 184K impressions and 806 engagements.',
   },
   {
     when: 'Nov 2025',

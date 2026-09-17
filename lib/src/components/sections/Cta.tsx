@@ -10,15 +10,15 @@ import { compact } from '#/lib/format'
 const OFFERS = [
   {
     title: 'Sponsored episode',
-    body: 'A segment of the Morning Maker Show where we use your product live and say what we think of it.',
+    body: 'A part of an episode where we use your product on air and say what we think of it.',
   },
   {
     title: 'Posts on X and LinkedIn',
     body: 'Posts written by us, in our own words, on our own accounts.',
   },
   {
-    title: 'Build with your tool',
-    body: 'Dan builds something real with your product, live on the show.',
+    title: 'A build on the show',
+    body: 'Dan uses your product to build something during an episode.',
   },
 ]
 
@@ -34,12 +34,13 @@ export function Cta() {
           <Reveal>
             <div className="mono-label text-slate">05 — work with us</div>
             <h2 className="mt-3 font-display text-[clamp(34px,4.8vw,64px)] leading-[1] tracking-[-0.025em] text-ink">
-              Want to reach these people?
+              Work with us
             </h2>
             <p className="mt-6 max-w-[54ch] text-[17px] leading-[1.45] text-body-muted">
-              We work with a few tools a year, and only ones we would use
-              anyway. Last year that meant {compact(TOTAL_IMPRESSIONS)}{' '}
-              impressions across the four accounts on this page.
+              We take a few sponsors a year, and only for tools we would use
+              anyway. The four accounts on this page had{' '}
+              {compact(TOTAL_IMPRESSIONS)} impressions this year. Three ways to
+              work together are listed on the right.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button
@@ -73,7 +74,7 @@ export function Cta() {
             </div>
             <div className="mt-8 flex items-center gap-3 text-[13px] text-slate">
               <TeamAvatars size={28} />
-              We answer ourselves.
+              Replies come from Dan and Sandra.
             </div>
           </Reveal>
 
@@ -104,7 +105,7 @@ export function Cta() {
             ))}
             <RevealItem>
               <p className="px-1 pt-2 text-[12px] leading-[1.4] text-muted">
-                All figures cover {WINDOW.start} to {WINDOW.end}.
+                All numbers cover {WINDOW.start} to {WINDOW.end}.
               </p>
             </RevealItem>
           </RevealGroup>
