@@ -10,6 +10,7 @@ import {
   MOMENTS,
   MONTH_LABELS,
   PLATFORMS,
+  cumulative,
 } from '#/data/stats'
 import { cn, compact } from '#/lib/format'
 
@@ -28,9 +29,10 @@ export function Moments() {
             </h2>
           </div>
           <p className="max-w-[560px] text-[17px] leading-[1.45] text-body-muted lg:justify-self-end">
-            Six months added most of the yearly total. Each one is listed
-            with what happened in it. The running total for every month is on
-            the right.
+            Six months added most of the yearly total. Each row shows how
+            much that month added; open it for what happened and where the
+            running total stood afterwards. The running total for every month
+            is on the right.
           </p>
         </Reveal>
 
@@ -40,6 +42,8 @@ export function Moments() {
               {MOMENTS.map((m, i) => {
                 const acc = ACCOUNTS[m.account]
                 const isOpen = open === i
+                const accountAfter = cumulative(acc.monthly)[m.monthIndex] ?? 0
+                const combinedAfter = COMBINED_CUMULATIVE[m.monthIndex] ?? 0
                 return (
                   <li
                     key={`${m.title}-${i}`}
@@ -74,7 +78,7 @@ export function Moments() {
                       </span>
                       <span className="flex items-center gap-3">
                         <span className="tabular font-display text-[18px] text-ink sm:text-[22px]">
-                          {compact(m.value)}
+                          +{compact(m.value)}
                         </span>
                         <ChevronDown
                           size={16}
@@ -98,9 +102,31 @@ export function Moments() {
                           }}
                           className="overflow-hidden"
                         >
-                          <p className="max-w-[64ch] pb-6 pl-[88px] text-[16px] leading-[1.5] text-body-muted sm:pl-[120px]">
-                            {m.detail}
-                          </p>
+                          <div className="pb-6 pl-[88px] sm:pl-[120px]">
+                            <p className="max-w-[64ch] text-[16px] leading-[1.5] text-body-muted">
+                              {m.detail}
+                            </p>
+                            <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-2">
+                              <div>
+                                <dt className="mono-label text-[10px] text-muted">
+                                  {acc.label} · running total after{' '}
+                                  {m.when}
+                                </dt>
+                                <dd className="tabular mt-0.5 font-display text-[18px] text-ink">
+                                  {compact(accountAfter)}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt className="mono-label text-[10px] text-muted">
+                                  all accounts · running total after{' '}
+                                  {m.when}
+                                </dt>
+                                <dd className="tabular mt-0.5 font-display text-[18px] text-ink">
+                                  {compact(combinedAfter)}
+                                </dd>
+                              </div>
+                            </dl>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>

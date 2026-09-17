@@ -259,7 +259,7 @@ export const metric = (account: AccountId, label: string) =>
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0)
 
-export const addSeries = (series: number[][]) =>
+const addSeries = (series: number[][]) =>
   MONTHS.map((_, i) => sum(series.map((s) => s[i] ?? 0)))
 
 export const cumulative = (series: number[]) => {
@@ -281,8 +281,10 @@ export const PLATFORM_MONTHLY: Record<PlatformId, number[]> = {
   linkedin: ACCOUNTS['sandra-linkedin'].monthly,
 }
 
-export const COMBINED_MONTHLY = addSeries(ACCOUNT_LIST.map((a) => a.monthly))
-export const COMBINED_CUMULATIVE = cumulative(COMBINED_MONTHLY)
+/** Running total of all four accounts, month by month. */
+export const COMBINED_CUMULATIVE = cumulative(
+  addSeries(ACCOUNT_LIST.map((a) => a.monthly)),
+)
 
 export const TOTAL_ENGAGEMENTS =
   metric('dan-x', 'Engagements') +
@@ -296,10 +298,6 @@ export const TOTAL_AUDIENCE =
   metric('mms-youtube', 'Subscribers')
 
 export const TOTAL_WATCH_HOURS = metric('mms-youtube', 'Watch time')
-
-export const PEAK_MONTH_INDEX = COMBINED_MONTHLY.indexOf(
-  Math.max(...COMBINED_MONTHLY),
-)
 
 /** Average impressions per day over the yearly window. */
 export const PER_DAY = Math.round(TOTAL_IMPRESSIONS / WINDOW.days)
