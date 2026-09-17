@@ -103,9 +103,9 @@ export function TeamAvatars({
   const shift = overlap ? { marginLeft: -size * 0.28 } : { marginLeft: 6 }
   return (
     <span className={cn('inline-flex items-center', className)}>
-      <Avatar person="dan" size={size} />
+      <ShowIcon size={size} />
+      <Avatar person="dan" size={size} style={shift} />
       <Avatar person="sandra" size={size} style={shift} />
-      <ShowIcon size={size} style={shift} />
     </span>
   )
 }

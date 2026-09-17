@@ -1,9 +1,11 @@
 import { ArrowLeft } from 'lucide-react'
+import { ShowIcon } from '#/components/brand/Avatar'
 import { Button } from '#/components/ui/Button'
 
 export function NotFound() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 text-center">
+      <ShowIcon size={64} ring={false} />
       <span className="mono-label text-muted">404</span>
       <h1 className="font-display text-[clamp(36px,6vw,72px)] leading-none tracking-[-0.03em] text-ink">
         Page not found.

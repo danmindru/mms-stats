@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
-import { AccountGlyph } from '#/components/brand/Avatar'
+import { AccountGlyph, TeamAvatars } from '#/components/brand/Avatar'
 import { PlatformLogo } from '#/components/brand/PlatformLogo'
 import { CumulativeChart } from '#/components/charts/CumulativeChart'
 import { ClientChart } from '#/components/charts/ClientChart'
@@ -67,13 +67,16 @@ export function Hero() {
             />
             <div className="relative z-[2] flex flex-col gap-5 p-5 sm:p-7">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="mono-label text-white/70">
-                  running total · all accounts
+                <span className="flex items-center gap-3">
+                  <TeamAvatars size={28} />
+                  <span className="mono-label text-white/70">
+                    yearly running total · all accounts
+                  </span>
                 </span>
                 <div className="flex items-center gap-2 text-white/70">
                   <PlatformLogo platform="x" size={14} />
-                  <PlatformLogo platform="linkedin" size={14} />
                   <PlatformLogo platform="youtube" size={14} />
+                  <PlatformLogo platform="linkedin" size={14} />
                 </div>
               </div>
 
