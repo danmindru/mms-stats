@@ -18,6 +18,8 @@ interface Props {
   className?: string
   showAxis?: boolean
   id: string
+  /** Bucket labels; defaults to the page's yearly month axis. */
+  labels?: string[]
 }
 
 /** Small cumulative area chart for cards. */
@@ -29,9 +31,10 @@ export function Sparkline({
   className,
   showAxis = true,
   id,
+  labels = MONTH_LABELS,
 }: Props) {
   const data = cumulative(monthly).map((v, i) => ({
-    month: MONTH_LABELS[i],
+    month: labels[i] ?? '',
     v,
   }))
   const gradId = `spark-${id}`
