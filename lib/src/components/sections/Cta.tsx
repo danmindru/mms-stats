@@ -24,7 +24,7 @@ const OFFERS = [
 
 export function Cta() {
   return (
-    <section id="work" className="px-3 pb-6 sm:px-5">
+    <section className="px-3 pb-6 sm:px-5">
       <div className="relative overflow-hidden rounded-lg bg-pale-indigo">
         <div
           className="blueprint pointer-events-none absolute inset-0 opacity-70"

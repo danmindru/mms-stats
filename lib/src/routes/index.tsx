@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Header } from '#/components/sections/Nav'
+import { Header } from '#/components/sections/Header'
 import { Hero } from '#/components/sections/Hero'
 import { Totals } from '#/components/sections/Totals'
 import { Platforms } from '#/components/sections/Platforms'

@@ -1,5 +1,5 @@
 import { Avatar, ShowIcon } from '#/components/brand/Avatar'
-import { PEOPLE, SHOW, WINDOW } from '#/data/stats'
+import { ACCOUNTS, PEOPLE, SHOW, WINDOW } from '#/data/stats'
 
 /** Plain page header: three avatars, no navigation, not sticky. */
 export function Header() {
@@ -16,7 +16,7 @@ export function Header() {
           <ShowIcon size={44} ring={false} />
         </a>
         <a
-          href="https://x.com/d4m1n"
+          href={ACCOUNTS['dan-x'].url}
           target="_blank"
           rel="noreferrer"
           aria-label={PEOPLE.dan.name}
@@ -25,7 +25,7 @@ export function Header() {
           <Avatar person="dan" size={44} ring={false} />
         </a>
         <a
-          href="https://x.com/TakoTreba"
+          href={ACCOUNTS['sandra-x'].url}
           target="_blank"
           rel="noreferrer"
           aria-label={PEOPLE.sandra.name}

@@ -18,7 +18,7 @@ export function Moments() {
   const max = COMBINED_CUMULATIVE[COMBINED_CUMULATIVE.length - 1]
 
   return (
-    <section id="moments" className="py-16 sm:py-24">
+    <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
         <Reveal className="grid gap-6 lg:grid-cols-[1fr_1.2fr] lg:items-end">
           <div>
@@ -111,7 +111,7 @@ export function Moments() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="rounded-lg bg-stone p-6 lg:sticky lg:top-6">
+            <div className="rounded-lg bg-stone p-6">
               <div className="mono-label text-muted">
                 running total by month
               </div>

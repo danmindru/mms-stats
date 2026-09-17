@@ -70,7 +70,7 @@ const ORDER: PlatformId[] = ['x', 'linkedin', 'youtube']
 
 export function Platforms() {
   return (
-    <section id="platforms" className="relative bg-stone/60 py-16 sm:py-24">
+    <section className="relative bg-stone/60 py-16 sm:py-24">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
         <Reveal className="grid gap-6 lg:grid-cols-[1fr_1.2fr] lg:items-end">
           <div>

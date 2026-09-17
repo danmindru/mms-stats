@@ -3,7 +3,7 @@ import { ACCOUNTS, SHOW, WINDOW } from '#/data/stats'
 
 export function Footer() {
   return (
-    <footer id="footnotes" className="bg-primary-deep text-white">
+    <footer className="bg-primary-deep text-white">
       <div className="mx-auto grid max-w-[1400px] gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[1.2fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-3">
