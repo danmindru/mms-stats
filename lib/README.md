@@ -26,7 +26,7 @@ is the single source of truth:
 - LinkedIn only exposes a 400-day window (Aug 13 2025 → Sep 16 2026); shown as
   reported.
 
-Derived aggregates (per platform, per person, cumulative series, moments) are
+Derived aggregates (per platform, cumulative series, milestones, biggest months) are
 computed in the same file so the UI never carries its own numbers.
 
 ## Stack
