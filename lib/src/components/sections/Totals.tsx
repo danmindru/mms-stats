@@ -13,6 +13,7 @@ import type { SeriesKey, SeriesMode } from '#/components/charts/CumulativeChart'
 import { ClientChart } from '#/components/charts/ClientChart'
 import { Chip } from '#/components/ui/Button'
 import { Counter } from '#/components/ui/Counter'
+import { Segmented } from '#/components/ui/Segmented'
 import { Reveal, RevealGroup, RevealItem } from '#/components/ui/Reveal'
 import { SpotlightCard } from '#/components/ui/SpotlightCard'
 import {
@@ -161,9 +162,9 @@ export function Totals() {
               </span>
             </div>
 
-            <Segmented
+            <Segmented<SeriesMode>
               value={mode}
-              onChange={(v) => setMode(v as SeriesMode)}
+              onChange={setMode}
               options={[
                 { value: 'platform', label: 'By platform' },
                 { value: 'account', label: 'By account' },
@@ -253,49 +254,6 @@ function MonthStrip({ active }: { active: number | null }) {
           </span>
         </div>
       ))}
-    </div>
-  )
-}
-
-export function Segmented({
-  value,
-  onChange,
-  options,
-}: {
-  value: string
-  onChange: (v: string) => void
-  options: { value: string; label: string }[]
-}) {
-  return (
-    <div
-      className="relative inline-flex rounded-xl bg-stone p-0.5"
-      role="tablist"
-    >
-      {options.map((o) => {
-        const selected = value === o.value
-        return (
-          <button
-            key={o.value}
-            type="button"
-            role="tab"
-            aria-selected={selected}
-            onClick={() => onChange(o.value)}
-            className={cn(
-              'relative z-10 rounded-[26px] px-3 py-1.5 text-[13px] leading-none transition-colors',
-              selected ? 'text-white' : 'text-ink/70 hover:text-ink',
-            )}
-          >
-            {selected && (
-              <motion.span
-                layoutId={`seg-${options.map((x) => x.value).join('-')}`}
-                className="absolute inset-0 -z-10 rounded-[26px] bg-primary"
-                transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-              />
-            )}
-            {o.label}
-          </button>
-        )
-      })}
     </div>
   )
 }

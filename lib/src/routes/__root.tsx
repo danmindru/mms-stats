@@ -14,7 +14,7 @@ interface MyRouterContext {
 
 const TITLE = 'Morning Maker Show — yearly stats'
 const DESCRIPTION =
-  'Yearly impressions for Dan, Sandra and the Morning Maker Show across X, YouTube and LinkedIn, Sep 2025 to Sep 2026.'
+  'How the Morning Maker Show works, and its numbers: 66.7M yearly impressions across X, YouTube and LinkedIn, the YouTube channel in depth, Hunted.Space, the podcast, the newsletter and the companies we work with.'
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({

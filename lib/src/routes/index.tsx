@@ -1,10 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Header } from '#/components/sections/Header'
 import { Hero } from '#/components/sections/Hero'
+import { Story } from '#/components/sections/Story'
 import { Totals } from '#/components/sections/Totals'
-import { Platforms } from '#/components/sections/Platforms'
+import { YouTube } from '#/components/sections/YouTube'
 import { People } from '#/components/sections/People'
-import { Moments } from '#/components/sections/Moments'
+import { Properties } from '#/components/sections/Properties'
 import { Cta } from '#/components/sections/Cta'
 import { Footer } from '#/components/sections/Footer'
 
@@ -16,10 +17,11 @@ function Home() {
       <Header />
       <main>
         <Hero />
+        <Story />
         <Totals />
-        <Platforms />
+        <YouTube />
         <People />
-        <Moments />
+        <Properties />
         <Cta />
       </main>
       <Footer />

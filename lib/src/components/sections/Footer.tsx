@@ -1,5 +1,7 @@
 import { AccountGlyph, TeamAvatars } from '#/components/brand/Avatar'
+import { PROPERTIES } from '#/data/properties'
 import { ACCOUNTS, SHOW, WINDOW } from '#/data/stats'
+import { YOUTUBE_NOW } from '#/data/youtube'
 
 export function Footer() {
   return (
@@ -39,15 +41,19 @@ export function Footer() {
               added into the combined total.
             </li>
             <li>
-              Yearly totals are copied from each platform’s analytics. Monthly
-              values are read from the native charts and scaled to match those
-              totals.
+              YouTube totals go back to the first episode on {YOUTUBE_NOW.since}.
+              Hunted.Space impressions are from Google Search Console, 12
+              months.
+            </li>
+            <li>
+              Totals are copied from each platform’s analytics. Monthly values
+              are read from the native charts and scaled to match those totals.
             </li>
           </ul>
         </div>
 
         <div>
-          <div className="mono-label text-white/70">accounts</div>
+          <div className="mono-label text-white/70">accounts and properties</div>
           <ul className="mt-4 space-y-2.5 text-[13px]">
             {Object.values(ACCOUNTS).map((a) => (
               <li key={a.id}>
@@ -59,6 +65,25 @@ export function Footer() {
                 >
                   <AccountGlyph account={a.id} size={20} badge={false} />
                   {a.label}
+                </a>
+              </li>
+            ))}
+            {PROPERTIES.filter((p) => p.id !== 'x').map((p) => (
+              <li key={p.id}>
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-white/85 transition-colors hover:text-white"
+                >
+                  <img
+                    src={p.icon}
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="h-5 w-5 rounded-full object-cover"
+                  />
+                  {p.name}
                 </a>
               </li>
             ))}
